@@ -1,0 +1,24 @@
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+<% content_for :title do %>Painel Social da Câmara dos Deputados<% end %>
+
+<div class="gridster">
+  <ul>
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="2">
+      <div data-id="causabrasil" data-view="Bubbles" data-title="Temas mais discutidos nas redes sociais" data-moreinfo="Dados obtidos pelo Causa Brasil"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="camaradosdeputados_twitter_mentions" data-view="Comments" style="background-color:#ff9618;" data-title="Twitter"></div>
+      <i class="icon-twitter icon-background"></i>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="camaradosdeputados_twitter_wordcloud"  data-title="Twitter" data-view="Wordcloud"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+      <div data-id="noticiasagenciacamara" data-view="List"  data-title="Mais lidas da Agência Câmara" data-moreinfo="Levantamento dos últimos 3 dias"></div>
+    </li>
+  </ul>
+</div>
