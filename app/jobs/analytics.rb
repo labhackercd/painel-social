@@ -57,7 +57,7 @@ def do_the_thing
   endDate = DateTime.now.strftime("%Y-%m-%d")
 
   noticiasMaisLidas = client.execute(:api_method => analytics.data.ga.get, :parameters => { 
-    'ids' => "ga:" + profileID,
+    'ids' => "ga:" + profile_id,
     'dimensions' => 'ga:pagePath',
     'metrics' => "ga:pageviews",
     'filters' => "ga:pagePath=~^/camaranoticias/.*\\.html$",
@@ -85,7 +85,7 @@ def do_the_thing
   endDate = DateTime.now.strftime("%Y-%m-%d")
 
   plVisitCount = client.execute(:api_method => analytics.data.ga.get, :parameters => { 
-    'ids' => "ga:" + profileID,
+    'ids' => "ga:" + profile_id,
     'dimensions' => 'ga:pagePath',
     'metrics' => "ga:pageviews",
     'filters' => "ga:pagePath=~^/proposicoesWeb/fichadetramitacao\\?idProposicao=.*$",
@@ -96,7 +96,7 @@ def do_the_thing
   })
 
   totalPLVisitCount = client.execute(:api_method => analytics.data.ga.get, :parameters => { 
-    'ids' => "ga:" + profileID,
+    'ids' => "ga:" + profile_id,
     'metrics' => "ga:pageviews",
     'filters' => "ga:pagePath=~^/proposicoesWeb/fichadetramitacao\\?idProposicao=.*$",
     'sort' => "-ga:pageviews",
@@ -105,7 +105,6 @@ def do_the_thing
   })
 
   totalPLVisitCount = totalPLVisitCount.data.rows[0][0].to_i
-
 
   tema_counts = Hash.new()
   
