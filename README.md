@@ -34,7 +34,7 @@ TODO
     TODO
     ```
     
-    * Veja a seção [Configuração][] para informações sobre este arquivo
+    * Veja a seção [Configuração](#configuracao) para informações sobre este arquivo
 
 4. Inicie o servidor Redis:
     
