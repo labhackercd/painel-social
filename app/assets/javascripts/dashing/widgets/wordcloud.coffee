@@ -40,27 +40,28 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
     # fill = d3.scale.linear().domain([0,1,2,3,4,5,6,10,15,20,100]).range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"])
     
     selector = "." + @id
-    draw = (words) -> d3.select(selector)\
-    .append("svg")\
-    .attr("width", width)\
-    .attr("height", height)\
-    .attr("class", "wordcloud")\
-    .append("g")\
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")\
-    .selectAll("text")\
-    .data(words)\
-    .enter()\
-    .append("a")\
-    .attr("xlink:href", (d) -> d.link)\
-    .attr("xlink:target", "_blank")\
-    .append("text")\
-    .style("font-size", (d) -> d.size + "px")\
-    .style("font-weight", "600")\
-    # .style("font-family", "Impact")\  # (1)
-    .style("fill", (d, i) -> fill(i))\
-    .attr("text-anchor", "middle")\   # (2)
-    .attr("transform", (d) -> "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")")\
-    .text((d) -> d.text)
+    draw = (words) ->
+      d3.select(selector)\
+      .append("svg")\
+      .attr("width", width)\
+      .attr("height", height)\
+      .attr("class", "wordcloud")\
+      .append("g")\
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")\
+      .selectAll("text")\
+      .data(words)\
+      .enter()\
+      .append("a")\
+      .attr("xlink:href", (d) -> d.link)\
+      .attr("xlink:target", "_blank")\
+      .append("text")\
+      .style("font-size", (d) -> d.size + "px")\
+      .style("font-weight", "600")\
+      # .style("font-family", "Impact")\  # (1)
+      .style("fill", (d, i) -> fill(i))\
+      .attr("text-anchor", "middle")\   # (2)
+      .attr("transform", (d) -> "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")")\
+      .text((d) -> d.text)
 
     @cloud = d3.layout.cloud()\
     .size([width, height])\
@@ -73,3 +74,6 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
     .fontSize((d) -> d.size )\
     .on("end", draw)\
     .start()
+    
+    if @get('value')
+      @hide_spinner()
