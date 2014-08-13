@@ -1,7 +1,8 @@
 #= require CustomTooltip
 #= require d3.legend
+#= require spinning_widget
 
-class Dashing.Bubbles extends Dashing.Widget
+class Dashing.Bubbles extends Dashing.WidgetWithSpinner
 
   ready: ->
     # TODO: Iterate to get to parent
@@ -38,6 +39,11 @@ class Dashing.Bubbles extends Dashing.Widget
     if not @ready?
       console.log('Not ready yet')
       return
+
+    if not @data?.length
+      @show_spinner()
+    else
+      @hide_spinner()
       
     # Remove previous word cloud if necessary
     $(@node).find("svg").remove()

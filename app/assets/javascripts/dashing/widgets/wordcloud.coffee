@@ -1,15 +1,20 @@
 #= require d3.layout.cloud
+#= require spinning_widget
 
 
-class Dashing.Wordcloud extends Dashing.Widget
+class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
 
   ready: ->
     @cloud = false
+
+    @show_spinner('#fff')
 
     @renderWordCloud()
     
   onData: (data) ->
     @renderWordCloud()
+    if data
+      @hide_spinner()
 
   renderWordCloud: ->
     console.log("Rendering word cloud")

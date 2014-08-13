@@ -1,4 +1,6 @@
-class Dashing.Comments extends Dashing.Widget
+#= require spinning_widget
+
+class Dashing.Comments extends Dashing.WidgetWithSpinner
 
   @accessor 'quote', ->
     "“#{@get('current_comment')?.body}”"
@@ -18,7 +20,10 @@ class Dashing.Comments extends Dashing.Widget
   nextComment: =>
     comments = @get('comments')
     if comments
+      @hide_spinner()
       @commentElem.fadeOut =>
         @currentIndex = (@currentIndex + 1) % comments.length
         @set 'current_comment', comments[@currentIndex]
         @commentElem.fadeIn()
+    else
+      @show_spinner('#fff')
