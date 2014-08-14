@@ -75,7 +75,7 @@ def twitter_process(search_term, slug)
     tweets = tweets.map do |tweet|
       text = tweet.text
       text = text.gsub(URI.regexp, '<a href="\0">\0</a>')
-      { name: tweet.user.name, body: tweet.text, avatar: tweet.user.profile_image_url_https }
+      { name: tweet.user.name, body: tweet.text, avatar: tweet.user.profile_image_url_https.to_s }
     end
     
     if search_term.start_with?('@')
