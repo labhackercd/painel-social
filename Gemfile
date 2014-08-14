@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'dashing-rails'
+gem 'dashing-rails', '~> 2.3.2'
 gem 'puma'
 
 gem 'twitter', '>= 5.0.0'
