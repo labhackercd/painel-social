@@ -22,8 +22,6 @@ class Dashing.Comments extends Dashing.WidgetWithSpinner
     else
       @hide_spinner()
 
-      console?.log comments
-
       @commentElem = $(@node).find('.comment-container')
       @commentElem?.fadeOut =>
         if !@is_carousel_started
