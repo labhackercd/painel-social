@@ -73,7 +73,7 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
 
     @cloud = d3.layout.cloud()\
       .size([width, height])\
-      .words(@get('value'))\
+      .words(@get('value') || [])\
       .padding(5)\   # (3)
       # .rotate(() -> ~~(Math.random() * 2) * 30; )\ # (4)
       .rotate(() -> ~~(Math.random() * 2) * 90; )\ # (4)
