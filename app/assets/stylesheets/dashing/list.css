@@ -1,0 +1,46 @@
+/* line 14, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list {
+  background-color: #12b0c5;
+  vertical-align: top;
+}
+/* line 19, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list .title {
+  color: rgba(255, 255, 255, 0.7);
+}
+/* line 23, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list ol, .widget-list ul {
+  margin: 0 15px;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.7);
+}
+/* line 29, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list ol {
+  list-style-position: inside;
+}
+/* line 33, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list li {
+  margin-bottom: 5px;
+}
+/* line 37, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list .list-nostyle {
+  list-style: none;
+}
+/* line 41, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list .label {
+  color: rgba(255, 255, 255, 0.7);
+}
+/* line 45, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list .value {
+  float: right;
+  margin-left: 12px;
+  font-weight: 600;
+  color: white;
+}
+/* line 52, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list .updated-at {
+  color: rgba(0, 0, 0, 0.3);
+}
+/* line 56, /home/vagrant/.rvm/gems/ruby-2.0.0-p481/gems/dashing-rails-2.3.2/vendor/assets/stylesheets/dashing/widgets/list.scss */
+.widget-list .more-info {
+  color: rgba(255, 255, 255, 0.7);
+}

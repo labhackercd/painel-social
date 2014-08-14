@@ -18,6 +18,7 @@ module Dashing
       response.headers['X-Accel-Buffering'] = 'no'
 
       @redis = Dashing.redis
+      
 
       # Here we stream out events that were cached through
       # Dashing.send_event(.., :cached => true)
