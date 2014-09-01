@@ -5,7 +5,7 @@
 Dashing.widget_margins ||= [5, 5]
 Dashing.widget_base_dimensions ||= [300, 360]
 Dashing.numColumns ||= 5
-Dashing.debugMode = true
+#Dashing.debugMode = true
 
 
 Dashing.on 'ready', ->

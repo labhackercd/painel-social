@@ -4,41 +4,25 @@
 
 class Dashing.Bubbles extends Dashing.WidgetWithSpinner
 
-  ready: ->
-    # TODO: Iterate to get to parent
-    cur = $(@node)
-    while (cur[0].tagName != "LI")
-      cur = cur.parent()
-      
-    @container = cur
-    
-    @width = (Dashing.widget_base_dimensions[0] * @container.data("sizex")) + Dashing.widget_margins[0] * 2 * (@container.data("sizex") - 1)
-    @height = (Dashing.widget_base_dimensions[1] * @container.data("sizey")) + Dashing.widget_margins[0] * 2 * (@container.data("sizey") - 1)
-    
+  onData: ->
     @data = @get('items') || []
-    @fill_colors = @get('fill_colors')
-    @min_radius = @get('min_radius')
-    @max_radius = @get('max_radius')
-    
-    @ready = true
-
-    @renderBubbles()
-    
-  onData: (data) ->
-    @data = @get('items')
-    @labels = @get('labels')
+    @labels = @get('labels') || []
     @fill_colors = @get('fill_colors')
     @min_radius = @get('min_radius')
     @max_radius = @get('max_radius')
 
-    console.log('render:onData')
-
-    @renderBubbles()
+    @renderBubbles() if @data.length
 
   renderBubbles: ->
-    if not @ready?
-      console.log('Not ready yet')
-      return
+    if not (@width or @height)
+      cur = $(@node)
+      while (cur[0].tagName != "LI")
+        cur = cur.parent()
+        
+      @container = cur
+      
+      @width = (Dashing.widget_base_dimensions[0] * @container.data("sizex")) + Dashing.widget_margins[0] * 2 * (@container.data("sizex") - 1)
+      @height = (Dashing.widget_base_dimensions[1] * @container.data("sizey")) + Dashing.widget_margins[0] * 2 * (@container.data("sizey") - 1)
 
     if not @data?.length
       @show_spinner()
@@ -164,7 +148,7 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
     #### KLUDGE to add labels
     # debugger;
     # alert(@labels)
-    if @labels
+    if @labels?.length
       @labels_elements = @vis.selectAll("g")
         .data(@labels)
         .enter()
