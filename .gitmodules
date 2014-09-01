@@ -1,0 +1,3 @@
+[submodule "vendor/dashing-rails"]
+	path = vendor/dashing-rails
+	url = https://github.com/ravishi/dashing-rails.git
