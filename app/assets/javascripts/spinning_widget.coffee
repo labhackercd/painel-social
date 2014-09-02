@@ -1,7 +1,16 @@
 #= require spin.min
 
 class Dashing.WidgetWithSpinner extends Dashing.Widget
-    
+
+  loadView: (_node) ->
+    super(_node)
+
+    if $(_node).hasClass('editable')
+      button = $('<a class="btn btn-default btn-editar-painel" data-toggle="modal" data-target="#editar-painel">Editar</a>')
+      button.appendTo($(_node))
+
+    return _node
+
   show_spinner: (color) ->
     
     @spinner_node = $('<div class="spinner"></div>')

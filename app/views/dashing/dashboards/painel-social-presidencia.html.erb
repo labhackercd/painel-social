@@ -1,22 +1,113 @@
 <% content_for :title do %>Painel Social da Presidência da Câmara<% end %>
 
-<div class="gridster">
+<div class="gridster painel-social">
   <ul>
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="2">
       <div data-id="causabrasil" data-view="Bubbles" data-title="Temas mais discutidos nas redes sociais" data-moreinfo="Dados obtidos pelo Causa Brasil"></div>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="henriqueealves_twitter_mentions" data-view="Comments" style="background-color:#ff9618;" data-title="Twitter"></div>
+      <div class="editable" data-id="henriqueealves_twitter_mentions" data-view="Comments" style="background-color:#ff9618;" data-title="Twitter"></div>
       <i class="fa fa-twitter icon-background"></i>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="henriqueealves_twitter_wordcloud"  data-title="Twitter" data-view="Wordcloud"></div>
+      <div class="editable" data-id="henriqueealves_twitter_wordcloud"  data-title="Twitter" data-view="Wordcloud"></div>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
       <div data-id="noticiasagenciacamara" data-view="List"  data-title="Mais lidas da Agência Câmara" data-moreinfo="Levantamento dos últimos 3 dias"></div>
     </li>
   </ul>
+</div>
+
+<div class="modal fade" id="editar-painel" tabindex="-1" role="dialog" aria-labelledby="editar-painel-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form role="form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="editar-painel-label">Editar painel</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+              <label for="panel[query]">Busca no Twitter</label>
+              <input type="text" class="form-control" id="panel[query]" placeholder="Busca no Twitter">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-primary" data-disabled-text="Salvando alterações...">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    function toggleForm() {
+      var form = $(this);
+      var disabled = !form.data('disabled');
+
+      // Salvar o estado em que deixaremos o form para a próxima chamada.
+      form.data('disabled', disabled);
+
+      // Desabilitar os controles do formulário.
+      //
+      // XXX Cuidado! Se o formulário possuir controles desabilitados
+      // *por padrão*, estes tais controles podem ser habilitados em
+      // chamadas subsequentes a essa função. Se você planeja usar
+      // esta função em tais circunstâncias, considere lidar com este
+      // caso espcial.
+      var controls = $(this).find('button,input,textarea,select').prop('disabled', disabled);
+
+      controls.filter('[data-disabled-text]').each(function() {
+        var ele = $(this);
+
+        // Atributo que será utilizado como valor/texto do botão
+        var attr = 'data-' + (disabled ? 'disabled' : 'enabled') + '-text';
+
+        // Valor alternativo.
+        var alt = ele.attr(attr);
+
+        // Atributo que salvará o valor atual (alternativo) do valor/texto do botão.
+        var attr_alt = 'data-' + (disabled ? 'enabled' : 'disabled') + '-text';
+
+        // <input type="submit" value="Enviar">
+        if (ele.filter('[value]').length) {
+          ele.attr(attr_alt, ele.attr('value'));
+          ele.attr('value', alt);
+        }
+        // <button type="submit">Enviar</button>
+        else {
+          ele.attr(attr_alt, ele.text());
+          ele.text(alt);
+        }
+      });
+    }
+
+    $('#editar-painel form').on('submit', function(e) {
+        e.preventDefault();
+
+        var form = this;
+
+        toggleForm.bind(form)();
+
+        // TODO FIXME XXX Alterar o tipo e a url para fazer um post
+        // dos dados ao endpoint correto na aplicação. Só coloquei esse
+        // GET aí para codificar as alterações de estado do formulário.
+        $.ajax({
+          type: 'GET',
+          url: '/',
+          success: function() {
+            toggleForm.bind(form)();
+          },
+          error: function() {
+            //toggleForm.bind(form)();
+          }
+        });
+    });
+  </script>
 </div>

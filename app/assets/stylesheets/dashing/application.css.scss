@@ -1,0 +1,26 @@
+/*
+ *= require dashing
+ *= require_tree .
+ */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+/* cor original do dashing */
+body {
+  background-color: #222 !important;
+}
+
+/* legend */
+.legend rect {
+  fill:white;
+  stroke:black;
+  opacity:0.8;
+}
+
+.painel-social .editable .btn-editar-painel {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 1;
+}
