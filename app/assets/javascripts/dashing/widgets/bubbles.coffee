@@ -4,18 +4,36 @@
 
 class Dashing.Bubbles extends Dashing.WidgetWithSpinner
 
-  onData: ->
+  @::on 'data', ->
     @data = @get('items') || []
     @labels = @get('labels') || []
     @fill_colors = @get('fill_colors')
     @min_radius = @get('min_radius')
     @max_radius = @get('max_radius')
 
-    @renderBubbles() if @data.length
+    # XXX Por algum motivo desconhecido, tentar renderizar as bolhas
+    # enquanto a página ainda não foi montada resulta em toda sorte
+    # de inconsistências incompreensíveis. Para evitar isso, usamos
+    # aqui o famoso hack do `setTimeout` na primeira renderização
+    if !@didRenderOnce
+      render = () =>
+        @didRenderOnce = true
+        setTimeout(@renderBubbles.bind(@), 600)
+    else
+      render = @renderBubbles
+
+    # Aqui, evitamos que as bolhas sejam renderizadas antes do
+    # widget ser incluído no DOM.
+    if @isInDOM
+      render()
+    else
+      @on 'viewDidAppear', ->
+        render()
 
   renderBubbles: ->
     if not (@width or @height)
       cur = $(@node)
+
       while (cur[0].tagName != "LI")
         cur = cur.parent()
         
@@ -24,13 +42,11 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       @width = (Dashing.widget_base_dimensions[0] * @container.data("sizex")) + Dashing.widget_margins[0] * 2 * (@container.data("sizex") - 1)
       @height = (Dashing.widget_base_dimensions[1] * @container.data("sizey")) + Dashing.widget_margins[0] * 2 * (@container.data("sizey") - 1)
 
-    if not @data?.length
-      @show_spinner()
-    else
-      @hide_spinner()
-      
+    @hide_spinner() if @data.length
+
     # Remove previous word cloud if necessary
     $(@node).find("svg").remove()
+
     if (@force)
       @force.stop()
       

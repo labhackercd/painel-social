@@ -42,6 +42,10 @@ class PanelsController < ApplicationController
   # PATCH/PUT /panels/1
   # PATCH/PUT /panels/1.json
   def update
+    # limpar o evento do tal painel :)
+    Dashing.send_event("#{@panel.slug}_twitter_mentions", nil)
+    Dashing.send_event("#{@panel.slug}_twitter_wordcloud", nil)
+
     respond_to do |format|
       if @panel.update(panel_params)
         format.html { redirect_to @panel, notice: 'Panel was successfully updated.' }

@@ -3,24 +3,14 @@
 
 class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
 
-  @::on 'ready', ->
+  firstRender: false
+
+  @::on 'data', ->
     if @isInDOM
-      @initialize()
-
-  @::on 'viewDidAppear', ->
-    @initialize()
-
-  initialize: ->
-    if !@initialized
-      @initialized = true
-
-      @show_spinner('#fff')
-      
-      @cloud = false
       @renderWordCloud()
-
-  onData: (data) ->
-    @renderWordCloud()
+    else
+      @on 'viewDidAppear', ->
+        setTimeout(@renderWordCloud.bind(@), 600)
 
   renderWordCloud: ->
     # Set up some variables

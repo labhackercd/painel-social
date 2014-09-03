@@ -19,6 +19,7 @@ require 'nokogiri'
 module Dashing
   class << self
     def send_event(id, data, options = {})
+      data = {} unless data
       data = data.merge(id: id, updatedAt: Time.now.utc.to_i).to_json
       redis.publish("#{Dashing.config.redis_namespace}.create", data)
 

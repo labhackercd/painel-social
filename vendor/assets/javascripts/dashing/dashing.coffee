@@ -1,18 +1,13 @@
-#= require jquery.gridster
-#= require dashing.gridster
-
-
-Dashing.widget_margins ||= [5, 5]
-Dashing.widget_base_dimensions ||= [300, 360]
-Dashing.numColumns ||= 5
-#Dashing.debugMode = true
-
-
 # data-target -> data-batmantarget
 Batman.DOM.readers.batmantarget = Batman.DOM.readers.target
 Batman.DOM.readers.target = null
 delete Batman.DOM.readers.target
 
+# Customary dashing initialization
+Dashing.widget_margins ||= [5, 5]
+Dashing.widget_base_dimensions ||= [300, 360]
+Dashing.numColumns ||= 5
+#Dashing.debugMode = true
 
 Dashing.on 'ready', ->
   contentWidth = (Dashing.widget_base_dimensions[0] + Dashing.widget_margins[0] * 2) * Dashing.numColumns
@@ -25,4 +20,3 @@ Dashing.on 'ready', ->
       avoid_overlapped_widgets: !Dashing.customGridsterLayout
       draggable:
         stop: Dashing.showGridsterInstructions
-

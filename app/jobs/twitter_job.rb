@@ -3,6 +3,7 @@ require 'open-uri'
 require 'time'
 require 'unicode_utils/downcase'
 
+
 def twitter_process(search_term, slug)
   #### Get your twitter keys & secrets:
   #### https://dev.twitter.com/docs/auth/tokens-devtwittercom
