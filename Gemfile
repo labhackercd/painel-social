@@ -9,6 +9,7 @@ gem 'mechanize'
 gem 'unicode_utils'
 gem 'i18n'
 gem 'bootstrap-sass'
+gem 'friendly_id'
 
 gem 'rails', '4.1.4'
 gem 'sqlite3'

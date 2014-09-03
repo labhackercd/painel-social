@@ -74,6 +74,8 @@ GEM
     extlib (0.9.16)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    friendly_id (5.0.4)
+      activerecord (>= 4.0.0)
     google-api-client (0.7.1)
       addressable (>= 2.3.2)
       autoparse (>= 0.3.3)
@@ -214,6 +216,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   dashing-rails (~> 2.4.0)!
   debugger
+  friendly_id
   google-api-client
   i18n
   jbuilder (~> 2.0)

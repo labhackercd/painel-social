@@ -7,12 +7,12 @@
     </li>
 
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div class="editable" data-id="henriqueealves_twitter_mentions" data-view="Comments" style="background-color:#ff9618;" data-title="Twitter"></div>
+    <div class="editable" data-id="<%= @panel.slug %>_twitter_mentions" data-view="Comments" style="background-color:#ff9618" data-title="Twitter"></div>
       <i class="fa fa-twitter icon-background"></i>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div class="editable" data-id="henriqueealves_twitter_wordcloud"  data-title="Twitter" data-view="Wordcloud"></div>
+      <div class="editable" data-id="<%= @panel.slug %>twitter_wordcloud"  data-title="Twitter" data-view="Wordcloud"></div>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
@@ -24,7 +24,7 @@
 <div class="modal fade" id="editar-painel" tabindex="-1" role="dialog" aria-labelledby="editar-painel-label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form role="form">
+      <%= form_for @panel do |f| %>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">
             <span aria-hidden="true">&times;</span>
@@ -34,15 +34,16 @@
         </div>
         <div class="modal-body">
             <div class="form-group">
-              <label for="panel[query]">Busca no Twitter</label>
-              <input type="text" class="form-control" id="panel[query]" placeholder="Busca no Twitter">
+              <!--<label for="panel[query]">Busca no Twitter</label>-->
+              <input type="text" class="form-control input-lg" name="panel[query]" id="panel[query]" placeholder="Busca no Twitter">
             </div>
         </div>
         <div class="modal-footer">
+          <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %> 
           <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-primary" data-disabled-text="Salvando alterações...">Salvar alterações</button>
         </div>
-      </form>
+      <% end %>
     </div>
   </div>
 
@@ -88,26 +89,75 @@
       });
     }
 
-    $('#editar-painel form').on('submit', function(e) {
-        e.preventDefault();
+    function formError(field_errors, form_errors) {
+      var $form = $(this);
+      var $err = $form.find('.modal-body [role="alert"].alert-danger');
 
+      if (form_errors && form_errors.length) {
+        if ($err.length) {
+          $err.html('');
+        } else {
+          $err = $('<div class="alert alert-danger" role="alert"></div>');
+          $err.prependTo($form.find('.modal-body'));
+          /*
+          TODO efeito de fadeout do erro enquanto o usuário altera o form :)
+          $form.on('input', 'input,select,textarea', function() {
+            $err.fadeOut(function() {
+              $err.remove();
+            });
+          });
+          */
+        }
+
+        for (var i in form_errors) {
+          $err.append($('<li>'+form_errors[i]+'</li>'));
+        }
+      }
+
+      // exibir erros no formulário
+      for (var k in field_errors) {
+        var v = field_errors[k];
+        var id = 'panel['+k+']';
+        var $field = $form.find('[name="'+id+'"]');
+        var $group = $field.closest('.form-group');
+        $group.find('label.error').remove();
+        $group.addClass('has-error');
+        for (var i in v) {
+          var err = v[i];
+          $group.prepend($('<label class="control-label error" for="'+id+'">'+err+'</label>'));
+        }
+      }
+    }
+
+    $('#editar-painel form').on('submit', function(e) {
         var form = this;
+        var $form = $(form);
+        var data = $form.serialize();
+
+        e.preventDefault();
 
         toggleForm.bind(form)();
 
         // TODO FIXME XXX Alterar o tipo e a url para fazer um post
         // dos dados ao endpoint correto na aplicação. Só coloquei esse
         // GET aí para codificar as alterações de estado do formulário.
-        $.ajax({
-          type: 'GET',
-          url: '/',
-          success: function() {
+        var request = $.ajax({
+            'url': $form.attr('action'),
+            'method': 'PUT',
+            'data': data,
+            'dataType': 'JSON'
+          })
+          .done(function(result) {
+            // remover erros do formulário
+            $form.find('.has-error').removeClass('has-error').find('label.error').remove();
+            $form.find('.alert-danger').remove();
+            $form.closest('.modal').modal('toggle');
             toggleForm.bind(form)();
-          },
-          error: function() {
-            //toggleForm.bind(form)();
-          }
-        });
+          })
+          .fail(function(r) {
+            toggleForm.bind(form)();
+            formError.bind(form)(r.responseJSON);
+          });
     });
   </script>
 </div>
