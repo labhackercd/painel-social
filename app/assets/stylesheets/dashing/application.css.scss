@@ -11,6 +11,7 @@ body #container {
   background-color: #222 !important;
 }
 
+
 /* legend */
 .legend rect {
   fill:white;
@@ -20,7 +21,45 @@ body #container {
 
 .painel-social .editable .btn-editar-painel {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 0px;
+  right: 15px;
   z-index: 1;
+}
+
+#container {
+  .widget {
+    font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    color: white;
+    h1 {
+      font-size: 30px;
+      line-height: 0px;
+    }
+    .btn-editar-painel {
+      font-size: 40px;
+      /*background-image: asset-url("edit-icon.png", image);*/
+      opacity: 0.5;
+      color: white;
+      background-size: cover;
+      &.hover {
+        opacity: 1;
+      }
+    }
+  }
+  .icon-background {
+    margin-top: 82px;
+    color: white;
+  }
+  .widget-list {
+    .title {
+      color: white;
+    }
+    .label {
+      font-size: 100%;
+      font-weight: normal;
+    }
+    &.noticiasagenciacamara ol {
+      margin-top: 40px;
+    }
+  }
 }
