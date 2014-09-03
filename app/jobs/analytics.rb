@@ -6,30 +6,6 @@ require 'mechanize'
 require 'net/http'
 require 'nokogiri'
 
-# We override the original `Dashing.send_event` to add support to a new
-# option: `:cached`. If :cached is true, the event data will be cached into a
-# redis keystore space. By using this in conjunction with our customised
-# events controller we ensure that events that take to long to happen will
-# always be available when dashboards are loaded. Please, see our version of
-# Dashing::EventsController#index for more information.
-#
-# XXX This is not the right place for this. But right now, I don't know where
-# I could put this in order to it to be loaded before any Dashing.send_event
-# call.
-module Dashing
-  class << self
-    def send_event(id, data, options = {})
-      data = {} unless data
-      data = data.merge(id: id, updatedAt: Time.now.utc.to_i).to_json
-      redis.publish("#{Dashing.config.redis_namespace}.create", data)
-
-      if options.fetch(:cache, false)
-        redis.set("#{Dashing.config.redis_namespace}:#{id}", data)
-      end
-    end
-  end
-end
-
 def do_the_thing
   secrets = Rails.application.secrets.google_analytics
 
