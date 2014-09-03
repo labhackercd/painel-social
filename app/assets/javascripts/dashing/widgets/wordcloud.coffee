@@ -3,14 +3,29 @@
 
 class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
 
-  firstRender: false
-
   @::on 'data', ->
+    # XXX Por algum motivo desconhecido, tentar renderizar o widget
+    # enquanto a página ainda não foi montada resulta em toda sorte
+    # de inconsistências incompreensíveis. Eu acredito sinceramente
+    # que isso tem a ver com a complexidade do algoritmo de criação
+    # das bolhas, que acaba sobrecarregando a máquina virtual de JS
+    # do browser e causando problemas na interação com outros
+    # componentes utilizados na página. Para evitar isso, usamos uns
+    # timeouts.
+    if !@didRenderOnce
+      render = () =>
+        @didRenderOnce = true
+        setTimeout(@renderWordCloud.bind(@), 600)
+    else
+      render = @renderWordCloud
+
+    # Aqui, evitamos que as bolhas sejam renderizadas antes do
+    # widget ser incluído no DOM.
     if @isInDOM
-      @renderWordCloud()
+      render()
     else
       @on 'viewDidAppear', ->
-        setTimeout(@renderWordCloud.bind(@), 600)
+        render()
 
   renderWordCloud: ->
     # Set up some variables
