@@ -46,8 +46,8 @@ class PanelsController < ApplicationController
   def update
 
     # limpar o evento do tal painel :)
-    Dashing.send_event("#{@panel.slug}_twitter_mentions", {:comments => nil})
-    Dashing.send_event("#{@panel.slug}_twitter_wordcloud", {:value => nil})
+    Dashing.send_event("#{@panel.slug}_twitter_mentions", {:comments => nil, :moreinfo => nil}, :cache => true)
+    Dashing.send_event("#{@panel.slug}_twitter_wordcloud", {:value => nil, :moreinfo => nil}, :cache => true)
 
     updated = @panel.update(panel_params)
 
