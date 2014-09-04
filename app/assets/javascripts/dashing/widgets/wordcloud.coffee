@@ -49,8 +49,9 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
       $(@node).find("svg").remove()
 
     # Should we draw a new cloud or show the spinner?
-    wordList = @get('value') || []
-    if not wordList?.length
+    wordList = @get('value')
+
+    if not wordList
       @show_spinner()
       return
     else

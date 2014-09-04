@@ -6,9 +6,9 @@ class Dashing.Comments extends Dashing.WidgetWithSpinner
     "“#{@get('currentComment')?.body}”"
 
   @::on 'data', ->
-    comments = @get('comments') || []
+    comments = @get('comments')
 
-    if not comments.length
+    if not comments
       @show_spinner()
       clearInterval(@carousel) if @carousel
       @set 'currentComment', null
