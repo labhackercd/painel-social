@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'dashing-rails', '~> 2.4.0', :path => 'vendor/dashing-rails'
+gem 'resque-scheduler'
 gem 'puma'
-#gem 'resque-scheduler'
 
 gem 'twitter', '>= 5.0.0'
 gem 'google-api-client'

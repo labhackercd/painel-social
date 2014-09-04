@@ -1,0 +1,20 @@
+panels:
+  queue: panels
+  every:
+    - "60m"
+    - :first_in: "1s"
+  class: UpdatePanels
+
+analytics:
+  queue: analytics
+  every:
+    - "6h"
+    - :first_in: "60s"
+  class: ProjetosDeLei
+
+causabrasil:
+  queue: causabrasil
+  every:
+    - "3600s"
+    - :first_in: "1s"
+  class: CausaBrasil

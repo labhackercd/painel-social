@@ -3,6 +3,8 @@
 
 class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
 
+  didRenderOnce: false
+
   @::on 'data', ->
     # XXX Por algum motivo desconhecido, tentar renderizar o widget
     # enquanto a página ainda não foi montada resulta em toda sorte
@@ -17,7 +19,7 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
         @didRenderOnce = true
         setTimeout(@renderWordCloud.bind(@), 600)
     else
-      render = @renderWordCloud
+      render = @renderWordCloud.bind(@)
 
     # Aqui, evitamos que as bolhas sejam renderizadas antes do
     # widget ser incluído no DOM.
@@ -26,6 +28,9 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
     else
       @on 'viewDidAppear', ->
         render()
+
+  @::on 'viewDidAppear', ->
+    @show_spinner() if not @hasData
 
   renderWordCloud: ->
     # Set up some variables
@@ -43,8 +48,11 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
       @cloud.stop()
       $(@node).find("svg").remove()
 
-    # hide the spinner if there are words
-    if @get('value')?
+    # Should we draw a new cloud or show the spinner?
+    wordList = @get('value') || []
+    if not wordList?.length
+      return
+    else
       @hide_spinner()
 
     # Fill colors
@@ -78,7 +86,7 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
 
     @cloud = d3.layout.cloud()\
       .size([width, height])\
-      .words(@get('value') || [])\
+      .words(wordList)\
       .padding(5)\   # (3)
       # .rotate(() -> ~~(Math.random() * 2) * 30; )\ # (4)
       .rotate(() -> ~~(Math.random() * 2) * 90; )\ # (4)

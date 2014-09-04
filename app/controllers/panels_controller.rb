@@ -1,3 +1,5 @@
+require Rails.root + 'app/jobs/twitter_job'
+
 class PanelsController < ApplicationController
   before_action :set_panel, only: [:show, :edit, :update, :destroy]
   before_filter :find_panel, only: [:show, :update, :destroy]
@@ -42,12 +44,18 @@ class PanelsController < ApplicationController
   # PATCH/PUT /panels/1
   # PATCH/PUT /panels/1.json
   def update
+
     # limpar o evento do tal painel :)
-    Dashing.send_event("#{@panel.slug}_twitter_mentions", nil)
-    Dashing.send_event("#{@panel.slug}_twitter_wordcloud", nil)
+    Dashing.send_event("#{@panel.slug}_twitter_mentions", {:comments => nil})
+    Dashing.send_event("#{@panel.slug}_twitter_wordcloud", {:value => nil})
+
+    updated = @panel.update(panel_params)
+
+    # TODO dequeue anything that still unprocessed?
+    Resque.enqueue(TwitterProcess, @panel.slug, @panel.query)
 
     respond_to do |format|
-      if @panel.update(panel_params)
+      if updated
         format.html { redirect_to @panel, notice: 'Panel was successfully updated.' }
         format.json { render :show, status: :ok, location: @panel }
       else

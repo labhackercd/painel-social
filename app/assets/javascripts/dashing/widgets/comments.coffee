@@ -5,13 +5,16 @@ class Dashing.Comments extends Dashing.WidgetWithSpinner
   @accessor 'quote', ->
     "“#{@get('currentComment')?.body}”"
 
-  @::on 'ready', ->
-    @show_spinner()
+  @::on 'data', ->
+    comments = @get('comments') || []
 
-  onData: ->
-    @hide_spinner()
-
-    if @get('comments')
+    if not comments.length
+      @show_spinner()
+      clearInterval(@carousel) if @carousel
+      @set 'currentComment', null
+      $(@node).find('.comment-container').hide()
+    else
+      @hide_spinner()
       @currentIndex = 0
       @cycleComments()
       clearInterval(@carousel) if @carousel
