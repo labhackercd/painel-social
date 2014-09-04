@@ -51,6 +51,7 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
     # Should we draw a new cloud or show the spinner?
     wordList = @get('value') || []
     if not wordList?.length
+      @show_spinner()
       return
     else
       @hide_spinner()
