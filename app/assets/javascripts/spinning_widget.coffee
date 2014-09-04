@@ -6,9 +6,15 @@ class Dashing.WidgetWithSpinner extends Dashing.Widget
     super(_node)
 
     if $(_node).hasClass('editable')
-      button = $('<a class="btn btn-default btn-editar-painel" data-toggle="modal" data-target="#editar-painel">Editar</a>')
+      button = $('<a class="btn-editar-painel" data-toggle="modal" data-target="#editar-painel"><i class="fa fa-pencil-square"></i></a>')
       button.appendTo($(_node))
-
+      
+      $('.btn-editar-painel').mouseover ->
+        $('.btn-editar-painel').addClass('hover')
+        
+      $('.btn-editar-painel').mouseout ->
+        $('.btn-editar-painel').removeClass('hover')
+        
     return _node
 
   show_spinner: (color) ->
