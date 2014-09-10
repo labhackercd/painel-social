@@ -6,11 +6,38 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+
 /* cor original do dashing */
 body#dashing-dashboard {
-  background-color: #222;
+  background-color: #222
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
+.causabrasil {
+  .more-info, .title {
+    z-index: 2;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.6);
+  }
+  .title {
+    margin-top: -10px !important;
+  }
+  .more-info {
+    bottom: 0;
+  }
+/*  text[Attributes Style] {
+    fill: rgb(255, 255, 255) !important;
+  }*/
+}
+
+.tooltip {
+  opacity: .9;
+}
+
+.painel-social {
+  width: auto !important;
+}
 
 /* legend */
 .legend rect {
@@ -23,22 +50,24 @@ body#dashing-dashboard {
   position: absolute;
   top: 0px;
   right: 15px;
-  z-index: 1;
+  z-index: 100;
 }
 
 #container {
+  padding: 5px;
+  /*.gridster li{width:34%;}*/
   .widget {
     font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 20px;
     color: white;
     h1 {
       font-size: 30px;
-      line-height: 0px;
+      margin-top: 4px;
     }
     .btn-editar-painel {
       font-size: 40px;
       /*background-image: asset-url("edit-icon.png", image);*/
-      opacity: 0.5;
+      opacity: 0.2;
       color: white;
       background-size: cover;
       &.hover {
@@ -57,9 +86,20 @@ body#dashing-dashboard {
     .label {
       font-size: 100%;
       font-weight: normal;
+      white-space: normal;
     }
     &.noticiasagenciacamara ol {
       margin-top: 40px;
+    }
+    li {
+      position: relative;
+      padding-right: 46px;
+    }
+    .value {
+      position: absolute;
+      top: .2em;
+      right: 0;
+      font-size: .8em;
     }
   }
 }
