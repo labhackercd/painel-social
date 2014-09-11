@@ -18,8 +18,6 @@ Dashing.widget_base_dimensions ||= [widget_width, widget_height]
 
 Dashing.on 'ready', ->
   
-  console.log widget_width
-  
   contentWidth = (Dashing.widget_base_dimensions[0] + Dashing.widget_margins[0] * 2) * Dashing.numColumns
 
   Batman.setImmediate ->
