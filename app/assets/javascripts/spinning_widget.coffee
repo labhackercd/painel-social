@@ -1,5 +1,6 @@
 #= require spin.min
 
+
 class Dashing.WidgetWithSpinner extends Dashing.Widget
 
   loadView: (_node) ->
