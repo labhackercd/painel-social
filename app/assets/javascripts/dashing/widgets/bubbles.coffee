@@ -273,11 +273,15 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
         @circles
           .each(this.cluster(10 * e.alpha * e.alpha))
           .each(this.collide(.5))
+          .each(this.tick)
           .attr("transform", (d) -> "translate("+d.x+","+d.y+")")
         # END 2
         
     @force.start()
   
+    
+  tick: (d) ->
+      d.x  = Math.max(d.radius, Math.min($('.causabrasil svg').width() - d.radius, d.x));
 
   # This is for simulation 2
   collide: (alpha) =>
