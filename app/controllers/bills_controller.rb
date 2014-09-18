@@ -20,12 +20,17 @@ class BillsController < ApplicationController
       }
     end
 
+    # Sort by views, descending
+    r.sort_by! { |b| -b[:views] }
+
+    # Set the relative view percentage for each of the topics
     views_total = r.map { |b| b[:views] }.inject(:+)
 
     r.each do |b|
       b[:perc] = b[:views].fdiv(views_total)
     end
 
+    # Get the requested topic (if any)
     if params[:topic]
       r = r.map { |i| i if i[:slug] == params[:topic] }.compact.first
     end
