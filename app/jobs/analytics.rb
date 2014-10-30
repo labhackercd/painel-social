@@ -56,10 +56,19 @@ class ProjetosDeLei
       'max-results' => "5" 
     })
 
-    noticiasMaisLidas.data.rows.each do |r|
+    noticiasMaisLidas.data.rows.each_with_index do |r, ridx|
       link = "http://www2.camara.leg.br"+r[0]
-      agent.get(link)
-      title = agent.page.title.sub(" - Câmara Notícias - Portal da Câmara dos Deputados", "")
+
+      begin
+        agent.get(link)
+        title = agent.page.title.sub(" - Câmara Notícias - Portal da Câmara dos Deputados", "")
+      rescue Mechanize::ResponseCodeError
+        # If the request fails, we try our best to extract the title from the
+        # url. Just in case.
+        title = link.sub(/\.html$/, '').split('/').last.downcase
+        title = title.replace(/-+/, ' ')
+      end
+
       pageviews = r[1]
       
       agenciacamara_counts[title] = {label: title, value: pageviews, link: link}
