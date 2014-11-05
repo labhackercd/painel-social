@@ -1,6 +1,5 @@
-class WelcomeController < ActionController::Base
+class WelcomeController < ApplicationController
   def index
-    # XXX FIXME please, use the routing helpers here, because I can't
-    redirect_to '/dashing/dashboards'
+    @panels = Panel.all
   end
 end

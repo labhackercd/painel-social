@@ -13,4 +13,8 @@ class Panel < ActiveRecord::Base
   def should_generate_new_friendly_id?
     name_changed? || @name.blank? and query_changed? || super
   end
+
+  def title
+    name
+  end
 end

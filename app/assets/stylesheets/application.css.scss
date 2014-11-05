@@ -9,15 +9,72 @@
  * compiled file so the styles you add here take precedence over styles defined in any styles
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
- *
- *= require_tree .
- *= require_self
  */
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+body {
+    /*padding-top: 90px;*/
+    margin: 0;
+    padding: 0;
+}
 
+.container,
+.lh-jumbotron .container {
+    max-width: 730px;
+}
+
+.lh-jumbotron {
+    color: white;
+    background: image_url('mountains.jpg');
+    background-size: cover;
+    background-position: center;
+    padding-top: 6em;
+    padding-bottom: 4em;
+}
+
+.lh-jumbotron h1 {
+    font-size: 6em;
+    font-weight: bolder;
+}
+
+.lh-jumbotron h1,
+.lh-jumbotron p {
+    font-weight: bold;
+}
+
+.lh-jumbotron h1 {
+    border-bottom: 0.1em solid white;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.lh-jumbotron .lead {
+    font-style: italic;
+}
+
+
+.lh-panel-list ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.lh-panel-list ul,
+.lh-panel-list .btn {
+    font-size: 2.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 2em;
+}
+
+.lh-panel-list .btn {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+/*
 body {
   padding-top: 40px;
   padding-bottom: 40px;
@@ -54,3 +111,4 @@ body {
   border-radius: 6px;
   width: 100%;
 }
+*/
