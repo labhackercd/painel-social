@@ -1,28 +1,15 @@
-<%= simple_form_for @panel, :html => {:class => "form-signin"} do |f| %>
-  <% if @panel.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@panel.errors.count, "error") %> prohibited this panel from being saved:</h2>
+<%= simple_form_for @panel, 
+  wrapper_mappings: {
+    check_boxes: :vertical_radio_and_checkboxes,
+    radio_buttons: :vertical_radio_and_checkboxes,
+    file: :vertical_file_input,
+    boolean: :vertical_boolean
+  } do |f| %>
+  <%= f.error_notification %>
 
-      <ul>
-      <% @panel.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= f.input :name, placeholder: 'Título do Painel' %>
 
-  <div class="field">
-    <%= f.input :name %>
-  </div>
-  <div class="field">
-    <%= f.input :slug %>
-  </div>
-  <div class="field">
-    <%= f.input :query %>
-  </div>
-  <div class="actions">
-    <%= button_tag :class => 'btn btn-lg btn-primary btn-block' do %>
-         Criar painel
-     <% end %>
-  </div>
+  <%= f.input :query, placeholder: 'Termos de busca, ex.: #camara, Câmara dos Deputados, @camara' %>
+
+  <%= f.button :submit %>
 <% end %>
