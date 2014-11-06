@@ -15,7 +15,6 @@ widget_height = ($(window).height() / 2) - (Dashing.widget_margins.reduce (t, s)
 Dashing.widget_base_dimensions ||= [widget_width, widget_height]
 
 
-
 Dashing.on 'ready', ->
   
   contentWidth = (Dashing.widget_base_dimensions[0] + Dashing.widget_margins[0] * 2) * Dashing.numColumns
