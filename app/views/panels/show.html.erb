@@ -17,7 +17,7 @@
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
-      <div data-id="noticiasagenciacamara" data-view="List" data-unordered="true" data-title="Mais lidas da Agência Câmara" data-moreinfo="Levantamento dos últimos 3 dias"></div>
+      <div data-id="noticiasagenciacamara" data-view="Newslist" data-unordered="true" data-title="Mais lidas da Agência Câmara" data-moreinfo="Levantamento dos últimos 3 dias"></div>
     </li>
   </ul>
 </div>
@@ -36,7 +36,12 @@
         <div class="modal-body">
             <div class="form-group">
               <!--<label for="panel[query]">Busca no Twitter</label>-->
-              <input type="text" class="form-control input-lg" name="panel[query]" id="panel[query]" placeholder="Busca no Twitter">
+              <input type="text" class="form-control input-lg"
+                name="panel[query]"
+                id="panel[query]"
+                placeholder="Busca no Twitter"
+                value="<%= @panel.query %>"
+                >
             </div>
         </div>
         <div class="modal-footer">
@@ -153,6 +158,10 @@
             $form.find('.has-error').removeClass('has-error').find('label.error').remove();
             $form.find('.alert-danger').remove();
             $form.closest('.modal').modal('toggle');
+
+            console.log(data);
+            //$form.find('[name="panel[query]"]').val(data['panel']['query']);
+
             toggleForm.bind(form)();
           })
           .fail(function(r) {

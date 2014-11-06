@@ -79,7 +79,17 @@ body#dashing-dashboard {
     margin-top: 82px;
     color: white;
   }
-  .widget-list {
+  .widget-newslist {
+    /** Fellype que mandou eu fazer isso */
+    h1 {
+      position: absolute;
+      top: 20px;
+    }
+    ul {
+      margin-top: 80px;
+    }
+    /* /Fim do trecho que o Fellype me mandou fazer */
+
     .title {
       color: white;
     }
