@@ -7,7 +7,7 @@ class PanelsController < ApplicationController
   # GET /panels
   # GET /panels.json
   def index
-    @panels = Panel.all
+    redirect_to '/'
   end
 
   # GET /panels/1
