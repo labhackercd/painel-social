@@ -5,6 +5,15 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
 
   didRenderOnce: false
 
+  showOrHideSpinner: ->
+    if not @get('value')
+      @show_spinner('#fff')
+    else
+      @hide_spinner()
+
+  @::on 'viewDidAppear', ->
+    @showOrHideSpinner()
+
   @::on 'data', ->
     # XXX Por algum motivo desconhecido, tentar renderizar o widget
     # enquanto a página ainda não foi montada resulta em toda sorte
@@ -29,9 +38,6 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
       @on 'viewDidAppear', ->
         render()
 
-  @::on 'viewDidAppear', ->
-    @show_spinner() if not @hasData
-
   renderWordCloud: ->
     # Set up some variables
     cur = $(@node)
@@ -48,14 +54,12 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
       @cloud.stop()
       $(@node).find("svg").remove()
 
-    # Should we draw a new cloud or show the spinner?
     wordList = @get('value')
 
     if not wordList
-      @show_spinner()
       return
-    else
-      @hide_spinner()
+
+    @showOrHideSpinner()
 
     # Fill colors
     # fill = d3.scale.category20();

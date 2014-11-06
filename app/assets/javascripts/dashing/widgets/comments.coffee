@@ -5,16 +5,25 @@ class Dashing.Comments extends Dashing.WidgetWithSpinner
   @accessor 'quote', ->
     "“#{@get('currentComment')?.body}”"
 
+  showOrHideSpinner: ->
+    if not @get('comments')
+      @show_spinner('#fff')
+    else
+      @hide_spinner()
+
+  @::on 'viewDidAppear', ->
+    @showOrHideSpinner()
+
   @::on 'data', ->
+    @showOrHideSpinner()
+
     comments = @get('comments')
 
     if not comments
-      @show_spinner()
       clearInterval(@carousel) if @carousel
       @set 'currentComment', null
       $(@node).find('.comment-container').hide()
     else
-      @hide_spinner()
       @currentIndex = 0
       @cycleComments()
       clearInterval(@carousel) if @carousel

@@ -18,12 +18,14 @@ class Dashing.WidgetWithSpinner extends Dashing.Widget
         
     return _node
 
+  closestWidget: ->
+    return $(@node).closest('li')
+
   show_spinner: (color) ->
-    
-    @spinner_node = $('<div class="spinner"></div>')
-    
-    @spinner_node.appendTo($(@node).parent('.gs_w'))
-    
+
+    if @spinner
+      return
+
     if not color
       color = '#666666'
 
@@ -45,9 +47,12 @@ class Dashing.WidgetWithSpinner extends Dashing.Widget
       top: '50%' # Top position relative to parent
       left: '50%' # Left position relative to parent
 
-    @spinner = new Spinner(opts)
+    # XXX FIXME li may not be the best selector here
 
-    @spinner.spin(@spinner_node.get()[0])
+    @spinner = (new Spinner(opts)).spin()
+    @closestWidget().append(@spinner.el)
 
   hide_spinner: ->
-    $(@spinner_node).hide()
+    if @spinner
+      @closestWidget().find(@spinner.el).remove()
+      @spinner = null

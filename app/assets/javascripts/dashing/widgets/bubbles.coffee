@@ -4,6 +4,15 @@
 
 class Dashing.Bubbles extends Dashing.WidgetWithSpinner
 
+  showOrHideSpinner: ->
+    if not @get('items')
+      @show_spinner()
+    else
+      @hide_spinner()
+
+  @::on 'viewDidAppear', ->
+    @showOrHideSpinner()
+
   @::on 'data', ->
     @data = @get('items') || []
     @labels = @get('labels') || []
@@ -31,6 +40,9 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
         render()
 
   renderBubbles: ->
+
+    @showOrHideSpinner()
+
     if not (@width or @height)
       cur = $(@node)
 
@@ -41,8 +53,6 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       
       @width = (Dashing.widget_base_dimensions[0] * @container.data("sizex")) + Dashing.widget_margins[0] * 2 * (@container.data("sizex") - 1)
       @height = (Dashing.widget_base_dimensions[1] * @container.data("sizey")) + Dashing.widget_margins[0] * 2 * (@container.data("sizey") - 1)
-
-    @hide_spinner() if @data.length
 
     # Remove previous word cloud if necessary
     $(@node).find("svg").remove()

@@ -6,7 +6,7 @@ delete Batman.DOM.readers.target
 # Customary dashing initialization
 Dashing.widget_margins ||= [5, 5]
 Dashing.numColumns ||= 5
-Dashing.debugMode = true
+Dashing.debugMode = false
 
 
 widget_width = ($(window).width() - (Dashing.widget_margins.reduce (t, s) -> t + s) * (Dashing.numColumns + 1) ) / Dashing.numColumns
