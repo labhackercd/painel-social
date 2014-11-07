@@ -36,6 +36,7 @@ class BillsController < ApplicationController
     if params[:topic]
       if params[:topic] =~ /^\d+$/
         r = r.map { |i| i if i[:id] == params[:topic].to_i }.compact.first
+      else
         r = r.map { |i| i if i[:slug] == params[:topic] }.compact.first
       end
     elsif params[:ordered_index]
