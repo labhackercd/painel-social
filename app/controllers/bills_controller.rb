@@ -9,7 +9,9 @@ class BillsController < ApplicationController
   end
 
   # GET /topics
+  # GET /topics/0
   # GET /topics/some-topic
+  # GET /topics/ordered/0
   def topics
     r = bills_grouped_by_topic.map do |slug, bills|
       {
@@ -32,7 +34,14 @@ class BillsController < ApplicationController
 
     # Get the requested topic (if any)
     if params[:topic]
-      r = r.map { |i| i if i[:slug] == params[:topic] }.compact.first
+      if params[:topic] =~ /^\d+$/
+        r = r.map { |i| i if i[:id] == params[:topic].to_i }.compact.first
+        r = r.map { |i| i if i[:slug] == params[:topic] }.compact.first
+      end
+    elsif params[:ordered_index]
+      # XXX Hack for the Arduino display which shouldn't show "other topics"
+      r = r.map { |i| i if i[:slug] != 'outros-temas' }.compact
+      r = r[params[:ordered_index].to_i]
     end
 
     respond_with r
