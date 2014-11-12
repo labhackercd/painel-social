@@ -3,11 +3,8 @@ require 'json'
 require 'twitter'
 require 'net/http'
 
-
 class CausaBrasil
-  # tema_counts = { "Tema 1" => { label: "Tema 1", value: 10 }, "Tema 2" => { label: "Tema 2", value: 6 } }
 
-  #Dashing.scheduler.every '3600s', :first_in => 0.4 do
   def self.perform
     tema_counts = Hash.new({ value: 0 })
     

@@ -201,7 +201,3 @@ class ProjetosDeLei
     Dashing.send_event('pls', pls, :cache => true)
   end
 end
-
-#Dashing.scheduler.every '6h', :first_in => 0.4 do
-#  do_the_thing
-#end
