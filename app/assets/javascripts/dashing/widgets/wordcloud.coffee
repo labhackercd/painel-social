@@ -54,12 +54,12 @@ class Dashing.Wordcloud extends Dashing.WidgetWithSpinner
       @cloud.stop()
       $(@node).find("svg").remove()
 
+    @showOrHideSpinner()
+
     wordList = @get('value')
 
     if not wordList
       return
-
-    @showOrHideSpinner()
 
     # Fill colors
     # fill = d3.scale.category20();
