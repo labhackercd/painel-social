@@ -1,9 +1,16 @@
 #= require spinning_widget
+#= require moment
+#= require moment/locale/pt-br
 
 class Dashing.Comments extends Dashing.WidgetWithSpinner
 
   @accessor 'quote', ->
     "“#{@get('currentComment')?.body}”"
+
+  @accessor 'timeago', ->
+    cur = @get('currentComment')?.created_at
+    moment.locale('pt-br')
+    moment(cur).fromNow() if cur
 
   showOrHideSpinner: ->
     if not @get('comments')

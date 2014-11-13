@@ -61,7 +61,8 @@ class TwitterProcess
         }
       end
 
-      Dashing.send_event("#{slug}_twitter_wordcloud", {:value => wordcloud}, :cache => true)
+      info = "Baseado em #{freqmap.values.inject(:+)} hashtags presentes em #{mentions.length}"
+      Dashing.send_event("#{slug}_twitter_wordcloud", {:value => wordcloud, :moreinfo => info}, :cache => true)
     end
   end
 end
