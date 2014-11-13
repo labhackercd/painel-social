@@ -3,7 +3,7 @@
 class Dashing.Newslist extends Dashing.WidgetWithSpinner
   showOrHideSpinner: ->
     if not @get('items')
-      @show_spinner()
+      @show_spinner('#fff')
     else
       @hide_spinner()
 
