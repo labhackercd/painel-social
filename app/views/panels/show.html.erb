@@ -25,29 +25,31 @@
 <div class="modal fade" id="editar-painel" tabindex="-1" role="dialog" aria-labelledby="editar-painel-label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <%= form_for @panel do |f| %>
+      <%= simple_form_for @panel, 
+        wrapper_mappings: {
+          check_boxes: :vertical_radio_and_checkboxes,
+          radio_buttons: :vertical_radio_and_checkboxes,
+          file: :vertical_file_input,
+          boolean: :vertical_boolean
+        } do |f| %>
+
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">
             <span aria-hidden="true">&times;</span>
             <span class="sr-only">Close</span>
           </button>
-          <h4 class="modal-title" id="editar-painel-label">Editar painel</h4>
+          <h4 class="modal-title" id="editar-painel-label">Editar Painel</h4>
         </div>
+
         <div class="modal-body">
-            <div class="form-group">
-              <!--<label for="panel[query]">Busca no Twitter</label>-->
-              <input type="text" class="form-control input-lg"
-                name="panel[query]"
-                id="panel[query]"
-                placeholder="Busca no Twitter"
-                value="<%= @panel.query %>"
-                >
-            </div>
+            <%= f.error_notification %>
+
+            <%= f.input :query, placeholder: 'Termos de busca, ex.: #camara, Câmara dos Deputados, @camara' %>
         </div>
+
         <div class="modal-footer">
-          <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %> 
           <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-          <button type="submit" class="btn btn-primary" data-disabled-text="Salvando alterações...">Salvar alterações</button>
+          <%= f.button :submit, :class => 'btn btn-primary', :'data-disabled-text' => 'Enviando...'  %>
         </div>
       <% end %>
     </div>
@@ -158,9 +160,6 @@
             $form.find('.has-error').removeClass('has-error').find('label.error').remove();
             $form.find('.alert-danger').remove();
             $form.closest('.modal').modal('toggle');
-
-            console.log(data);
-            //$form.find('[name="panel[query]"]').val(data['panel']['query']);
 
             toggleForm.bind(form)();
           })
