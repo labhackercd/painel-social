@@ -46,7 +46,7 @@ class BillsController < ApplicationController
       r = r[params[:ordered_index].to_i]
 
       # They also dont like big jsons
-      r.delete(:slug)
+      r.delete(:slug) if r
     end
 
     respond_with r
