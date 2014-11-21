@@ -44,6 +44,9 @@ class BillsController < ApplicationController
       # "other topics" entry
       r = r.map { |i| i if i[:slug] != 'outros-temas' }.compact
       r = r[params[:ordered_index].to_i]
+
+      # They also dont like big jsons
+      r.delete(:slug)
     end
 
     respond_with r
