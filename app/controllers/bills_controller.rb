@@ -15,10 +15,11 @@ class BillsController < ApplicationController
   def topics
     r = bills_grouped_by_topic.map do |slug, bills|
       {
-        :id => bills.first["id-categoria"],
+        :id => bills.first['id-categoria'],
         :slug => slug,
-        :title => bills.first["categoria"],
-        :views => bills.map { |b| b["value"] }.inject(:+)
+        :title => ActiveSupport::Inflector.transliterate(bills.first['categoria']),
+        :actual_title => bills.first['categoria'],
+        :views => bills.map { |b| b['value'] }.inject(:+)
       }
     end
 
@@ -40,7 +41,8 @@ class BillsController < ApplicationController
         r = r.map { |i| i if i[:slug] == params[:topic] }.compact.first
       end
     elsif params[:ordered_index]
-      # XXX Hack for the Arduino display which shouldn't show "other topics"
+      # XXX Hack for the Arduino display which shouldn't show the
+      # "other topics" entry
       r = r.map { |i| i if i[:slug] != 'outros-temas' }.compact
       r = r[params[:ordered_index].to_i]
     end
@@ -59,11 +61,11 @@ class BillsController < ApplicationController
       data = @redis.get("#{Dashing.config.redis_namespace}:pls")
       data = JSON.parse(data)
 
-      @bills = data["items"]
+      @bills = data['items']
 
       @bills.each do |bill|
-        catid = bill["id-categoria"] = bill["categoria"]
-        bill["categoria"] = data["labels"][catid]["name"]
+        catid = bill['id-categoria'] = bill['categoria']
+        bill['categoria'] = data['labels'][catid]['name']
       end
 
     ensure
@@ -72,7 +74,7 @@ class BillsController < ApplicationController
 
     def bills_grouped_by_topic
       @bills.group_by do |item|
-        item["categoria"].parameterize
+        item['categoria'].parameterize
       end
     end
 end
