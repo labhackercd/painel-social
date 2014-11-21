@@ -18,7 +18,6 @@ class BillsController < ApplicationController
         :id => bills.first['id-categoria'],
         :slug => slug,
         :title => ActiveSupport::Inflector.transliterate(bills.first['categoria']),
-        :actual_title => bills.first['categoria'],
         :views => bills.map { |b| b['value'] }.inject(:+)
       }
     end
