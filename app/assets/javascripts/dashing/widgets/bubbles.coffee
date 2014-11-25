@@ -59,30 +59,24 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
 
     if (@force)
       @force.stop()
-      
-    # console.log(Dashing.widget_base_dimensions)
-    
-    # locations the nodes will move towards
-    # depending on which view is currently being
-    # used
+
+    # locations the nodes will move towards depending on which view is
+    # currently being used
     @center = {x: @width / 2, y: @height / 2}
-    # @year_centers = {
-    #   "2008": {x: @width / 3, y: @height / 2},
-    #   "2009": {x: @width / 2, y: @height / 2},
-    #   "2010": {x: 2 * @width / 3, y: @height / 2}
-    # }
 
     @tooltip = CustomTooltip(@container, "bubbles_tooltip", 240)
     
-    # used when setting up force and
-    # moving around nodes
-    # @layout_gravity = -0.01
+    # used when setting up force and moving around nodes
     @layout_gravity = 0.08
     @damper = 0.1
     @max_clusters = 10
-    @padding = 1.5 # separation between same-color circles
-    @cluster_padding = 6 # separation between different-color circles
     @word_width = 10
+
+    # padding between same-color circles
+    @padding = 1.5 
+
+    # separation between different-color circles
+    @cluster_padding = 6
 
     # these will be set in create_nodes and create_vis
     @vis = null
@@ -107,15 +101,16 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
     # use the max total_amount in the data as the max in the scale's domain
 
     max_amount = d3.max(@data, (d) -> parseInt(d.value))
-    @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([@min_radius, @max_radius])
+    @radius_scale = d3.scale.pow()
+      .exponent(0.5)
+      .domain([0, max_amount])
+      .range([@min_radius, @max_radius])
     
-    this.create_nodes()
-    this.create_vis()
+    @create_nodes()
+    @create_vis()
 
-    #--
-
-    this.start()
-    this.display_group_all()
+    @start()
+    @display_group_all()
 
   # create node objects from original data
   # that will serve as the data behind each
@@ -123,9 +118,9 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
   # to @nodes to be used later
   create_nodes: () =>
     @data.forEach (d) =>
-      
+
       # Spaghetti code para "quebrar" o texto em linhas
-      
+
       MAXIMUM_CHARS_PER_LINE = 20
       words = d.label.split(" ")
       line = ""
@@ -160,11 +155,8 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       @nodes.push node
 
     @nodes.sort (a,b) -> b.value - a.value
-    
 
-
-  # create svg at #vis and then 
-  # create circle representation for each node
+  # create svg at vis and then create circle representation for each node
   create_vis: () =>
     @vis = d3.select("." + @id).append("svg")
       .attr("width", @width)
@@ -172,8 +164,6 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       .attr("id", "svg_vis")
 
     #### KLUDGE to add labels
-    # debugger;
-    # alert(@labels)
     if @labels?.length
       @labels_elements = @vis.selectAll("g")
         .data(@labels)
@@ -194,19 +184,15 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
         legend.style("font-size", "16px").attr("data-style-padding", 10).call d3.legend
       ), 1000
 
-
-
-
-
     @circles = @vis.selectAll("circle")
       .data(@nodes, (d) -> d.id)
 
-    that = this
+    widget = this
 
     node = @circles.enter().append("g")
       .attr("class", "node")
-      .on("mouseover", (d,i) -> that.show_details(d,i,this))
-      .on("mouseout", (d,i) -> that.hide_details(d,i,this))
+      .on("mouseover", (d, i) -> widget.showDetails(d, i))
+      .on("mouseout", (d, i) -> widget.hideDetails(d, i))
 
     node.append("circle")
       .attr("r", 0)
@@ -215,7 +201,6 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       .attr("stroke", (d) => d3.rgb(@fill_colors[d.cluster]).darker())
       .attr("id", (d) -> "bubble_#{d.id}")
       
-
     node.append("text")
       .style("text-anchor", "middle")
       .attr("transform", (d) -> "translate(0," + -10 * d.radius / 90 + ")")
@@ -245,53 +230,33 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
     @circles.transition().duration(2000).delay((d, i) ->
       i * 5
     ).select("circle").attr("r", (d) -> d.radius)
-    
-    
 
-  # Charge function that is called for each node.
-  # Charge is proportional to the diameter of the
-  # circle (which is stored in the radius attribute
-  # of the circle's associated data.
-  # This is done to allow for accurate collision 
-  # detection with nodes of different sizes.
-  # Charge is negative because we want nodes to 
-  # repel.
-  # Dividing by 8 scales down the charge to be
-  # appropriate for the visualization dimensions.
-  charge: (d) ->
-    -200
-    # -Math.pow(d.radius, 2.0) / 2
-
-  # Starts up the force layout with
-  # the default values
-  start: () =>
+  # Starts up the force layout with the default values
+  start: ->
     @force = d3.layout.force()
       .nodes(@nodes)
       .size([@width, @height])
-
-
 
   # Sets up force layout to display
   # all nodes in one circle.
   display_group_all: () =>
     @force.gravity(@layout_gravity)
-      # .charge(this.charge)
       .charge((d, i) -> if i then 0 else -2000)
       .friction(0.9)
       .on "tick", (e) =>
         # BEGIN 2
         @circles
-          .each(this.cluster(10 * e.alpha * e.alpha))
-          .each(this.collide(.5))
-          .each(this.tick)
+          .each(@cluster(10 * e.alpha * e.alpha))
+          .each(@collide(.5))
+          .each(@ensureInsideBoundaries)
           .attr("transform", (d) -> "translate("+d.x+","+d.y+")")
         # END 2
-        
     @force.start()
   
-    
-  tick: (d) ->
-      d.x  = Math.max(d.radius, Math.min($('.causabrasil svg').width() - d.radius, d.x));
+  # Ensure that the circles are within the SVG's boundaries,
+  # i.e. they won't go off screen
+  ensureInsideBoundaries: (d) =>
+    d.x  = Math.max(d.radius, Math.min(@width - d.radius, d.x));
 
   # This is for simulation 2
   collide: (alpha) =>
@@ -342,11 +307,10 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       d.x = d.x + (@center.x - d.x) * (@damper + 0.02) * alpha
       d.y = d.y + (@center.y - d.y) * (@damper + 0.02) * alpha
   
-  show_details: (data, i, element) =>
+  showDetails: (data, i) ->
     content = "#{data.tooltip}"
-    @tooltip.showTooltip(content,d3.event) if data.tooltip isnt `undefined`
+    @tooltip.showTooltip(content, d3.event) if data.tooltip isnt `undefined`
   
   
-  hide_details: (data, i, element) =>
+  hideDetails: (data, i) ->
     @tooltip.hideTooltip()
-
