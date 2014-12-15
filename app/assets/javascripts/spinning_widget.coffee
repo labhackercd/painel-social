@@ -3,22 +3,8 @@
 
 class Dashing.WidgetWithSpinner extends Dashing.Widget
 
-  loadView: (_node) ->
-    super(_node)
-
-    if $(_node).hasClass('editable')
-      button = $('<a class="btn-editar-painel" data-toggle="modal" data-target="#editar-painel"><i class="fa fa-pencil-square"></i></a>')
-      button.appendTo($(_node))
-      
-      $('.btn-editar-painel').mouseover ->
-        $('.btn-editar-painel').addClass('hover')
-        
-      $('.btn-editar-painel').mouseout ->
-        $('.btn-editar-painel').removeClass('hover')
-        
-    return _node
-
   closestWidget: ->
+    # XXX FIXME li may not be the best selector here
     return $(@node).closest('li')
 
   show_spinner: (color) ->
@@ -46,8 +32,6 @@ class Dashing.WidgetWithSpinner extends Dashing.Widget
       zIndex: 2e9 # The z-index (defaults to 2000000000)
       top: '50%' # Top position relative to parent
       left: '50%' # Left position relative to parent
-
-    # XXX FIXME li may not be the best selector here
 
     @spinner = (new Spinner(opts)).spin()
     @closestWidget().append(@spinner.el)

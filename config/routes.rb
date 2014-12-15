@@ -1,9 +1,11 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
-  resources :panels
+  root 'welcome#index'
 
-  resources :bills, :except => [:show, :new, :edit, :update, :destroy] do
+  resources :panels, :only => [:index, :show]
+
+  resources :bills, :only => [:index] do
     collection do
       get 'topics(/:topic)', :to => :topics
       get 'topics/ordered/:ordered_index', :to => :topics, :constraints => {
@@ -15,6 +17,4 @@ Rails.application.routes.draw do
   mount Dashing::Engine, at: Dashing.config.engine_path
 
   mount Resque::Server.new, at: '/resque'
-
-  root 'welcome#index'
 end
