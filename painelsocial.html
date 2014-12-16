@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/JSXTransformer.js"></script>
+  </head>
+  <body>
+    <div id="main"></div>
+
+    <script type="text/javascript" src="bower_components/d3/d3.js"></script>
+    <script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
+    <script type="text/jsx" src="components/bubbles.js"></script>
+    <script type="text/jsx">
+      d3.json('data/painelsocial.json', function(err, data) {
+        var PainelSocial = React.createClass({
+          render: function() {
+            return (
+              <div className="PainelSocial">
+                <Bubbles width={500} height={400} data={this.props.causabrasil} />
+              </div>
+            );
+          }
+        });
+
+        React.render(
+          <PainelSocial {...data} />,
+          document.getElementById('main')
+        );
+      });
+    </script>
+  </body>
+</html>
