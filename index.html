@@ -10,12 +10,13 @@
 
     <script type="text/javascript" src="bower_components/d3/d3.js"></script>
     <script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
-    <script type="text/javascript" src="components/bubbles.js"></script>
+    <script type="text/jsx" src="components/bubbles.js"></script>
     <script type="text/jsx">
       d3.json('data/projetosdelei.json', function(err, data) {
-        var div = document.getElementById('main');
-        var props = {width: 1024, height: 500};
-        Bubbles.create(div, props, data);
+        React.render(
+          <Bubbles width={1024} height={500} data={data} />,
+          document.getElementById('main')
+        );
       });
     </script>
   </body>

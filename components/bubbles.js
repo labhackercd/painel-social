@@ -36,13 +36,11 @@ Bubbles._createNodes = function(props, state) {
     .domain([0, domainMax])
     .range([minRadius, maxRadius]);
 
-  var breakText = this._breakText;
-
-  var nodes = _.map(state.items, function(d) {
+  var nodes = _.map(state.items, (function(d) {
     return {
       id: d.label,
       label: d.label,
-      label_lines: breakText(d.label),
+      label_lines: this._breakText(d.label),
       radius: radiusScale(parseInt(d.value)),
       value: d.value,
       category: d.categoria,
@@ -51,7 +49,7 @@ Bubbles._createNodes = function(props, state) {
       x: Math.cos(d.categoria / maxClusters * 2 * Math.PI) * 400 + width / 2 + Math.random(),
       y: Math.cos(d.categoria / maxClusters * 2 * Math.PI) * 400 + self.height / 2 + Math.random()
     };
-  });
+  }).bind(this));
 
   // Separate the nodes in clusters
   var clusters = new Array(maxClusters);
@@ -126,16 +124,15 @@ Bubbles._drawAndAnimateBubbles = function(el, props, state, nodes) {
     .size([width, height]);
 
   // This was the old displayGroupAll function
-  var self = this;
   force.gravity(layoutGravity)
     .charge(function (d, i) { return (i ? 0 : -2000) })
     .friction(0.9)
-    .on('tick', function(e) {
+    .on('tick', (function(e) {
       circles
-        .each(self._clusterFn(10 * e.alpha * e.alpha))
-        .each(self._collideFn(nodes, 0.5, maxRadius, padding, clusterPadding))
+        .each(this._clusterFn(10 * e.alpha * e.alpha))
+        .each(this._collideFn(nodes, 0.5, maxRadius, padding, clusterPadding))
         .attr('transform', function(d) { return "translate(" + d.x + ", " + d.y + ")" })
-    });
+    }).bind(this));
 
   force.start();
 };
@@ -216,3 +213,32 @@ Bubbles._clusterFn = function(alpha) {
     }
   }
 };
+
+var d3Bubbles = Bubbles;
+
+Bubbles = React.createClass({
+  componentDidMount: function() {
+    var el = this.getDOMNode();
+    d3Bubbles.create(el, this.props, this.getChartState());
+  },
+
+  componentDidUpdate: function() {
+    var el = this.getDOMNode();
+    d3Bubbles.update(el, this.props, this.getChartState());
+  },
+
+  getChartState: function() {
+    return this.props.data;
+  },
+
+  componentWillUnmount: function() {
+    var el = this.getDOMNode();
+    d3Bubbles.destroy(el);
+  },
+
+  render: function() {
+    return (
+      <div className="Bubbles"></div>
+    );
+  }
+});
