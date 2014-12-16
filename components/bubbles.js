@@ -1,40 +1,34 @@
-function Bubbles(el, data) {
-  this.layoutGravity = 0.08;
+var Bubbles = {};
 
-  // padding between circles of the same color
-  this.padding = 1.5;
-
-  // separation between circles of different colors
-  this.clusterPadding = 6;
-
-  this.doTheThing(el, data);
-}
-
-Bubbles.prototype.doTheThing = function(el, data) {
-  var self = this;
-
-  var items = data['items'];
-
-  var fillColors = data['fill_colors'];
-  var minRadius = data['min_radius'];
-  var maxRadius = data['max_radius'];
-
-  var width = 1200;
-  var height = 768;
-  var maxClusters = 10;
-
-  // TODO tooltips
-
+Bubbles.create = function(el, props, state) {
   // Create the visualization
   var svg = d3.select(el)
     .append('svg')
     .attr('class', 'd3')
-    .attr('width', width)
-    .attr('height', height);
+    .attr('width', props.width)
+    .attr('height', props.height);
+
+  this.update(el, props, state);
+};
+
+Bubbles.update = function(el, props, state) {
+  var nodes = this._createNodes(props, state);
+  return this._drawAndAnimateBubbles(el, props, state, nodes);
+};
+
+Bubbles.destroy = function(el) {
+  // Any cleanup goes here
+};
+
+Bubbles._createNodes = function(props, state) {
+  var fillColors = state.fillColors;
+  var minRadius = state.minRadius;
+  var maxRadius = state.maxRadius;
+  var maxClusters = 10;
+  var width = props.width;
 
   // use the max total_amount in the data as the max in the scale's domain
-  // FIXME XXX Why is it a `parseInt` here?
-  var domainMax = d3.max(items, function(d) { return parseInt(d.value) });
+  var domainMax = d3.max(state.items, function(d) { return parseInt(d.value) });
 
   // Create the nodes
   var radiusScale = d3.scale.pow()
@@ -42,11 +36,13 @@ Bubbles.prototype.doTheThing = function(el, data) {
     .domain([0, domainMax])
     .range([minRadius, maxRadius]);
 
-  var nodes = _.map(items, function(d) {
+  var breakText = this._breakText;
+
+  var nodes = _.map(state.items, function(d) {
     return {
       id: d.label,
       label: d.label,
-      label_lines: self._breakText(d.label),
+      label_lines: breakText(d.label),
       radius: radiusScale(parseInt(d.value)),
       value: d.value,
       category: d.categoria,
@@ -58,29 +54,38 @@ Bubbles.prototype.doTheThing = function(el, data) {
   });
 
   // Separate the nodes in clusters
-  {
-    var clusters = new Array(maxClusters);
+  var clusters = new Array(maxClusters);
 
-    _.each(nodes, function(d) {
-      if (!clusters[d.category] || (d.r > clusters[d.category].radius)) {
-        clusters[d.category] = d;
-      }
-    });
+  _.each(nodes, function(d) {
+    if (!clusters[d.category] || (d.r > clusters[d.category].radius)) {
+      clusters[d.category] = d;
+    }
+  });
 
-    _.each(nodes, function(d) {
-      d.cluster = clusters[d.category];
-    });
-  }
+  // Assign each node their cluster
+  _.each(nodes, function(d) {
+    d.cluster = clusters[d.category];
+  });
 
-  // XXX Why exactly do we need to sort nodes?
-  nodes = _.sortBy(nodes, function(d) { return d.value * (-1) });
+  // Return nodes, sorted
+  return _.sortBy(nodes, function(d) { return d.value * (-1) });
+};
+
+Bubbles._drawAndAnimateBubbles = function(el, props, state, nodes) {
+  var width = props.width;
+  var height = props.height;
+  var padding = 1.5;
+  var clusterPadding = 6;
+  var layoutGravity = 0.08;
+  var maxRadius = state.maxRadius;
 
   // Place the nodes in the graph as circles
-  var circles = svg
+  var circles = d3.select(el).select('svg')
     .selectAll('circle')
     .data(nodes, function(d) { return d.id });
 
-  var node = circles.enter().append('g')
+  var node = circles.enter()
+    .append('g')
     .attr('class', 'node');
 
   node.append('circle')
@@ -121,20 +126,21 @@ Bubbles.prototype.doTheThing = function(el, data) {
     .size([width, height]);
 
   // This was the old displayGroupAll function
-  force.gravity(this.layoutGravity)
+  var self = this;
+  force.gravity(layoutGravity)
     .charge(function (d, i) { return (i ? 0 : -2000) })
     .friction(0.9)
     .on('tick', function(e) {
       circles
-        .each(self.clusterFn(10 * e.alpha * e.alpha))
-        .each(self.collideFn(nodes, 0.5, self.maxRadius, self.padding, self.clusterPadding))
+        .each(self._clusterFn(10 * e.alpha * e.alpha))
+        .each(self._collideFn(nodes, 0.5, maxRadius, padding, clusterPadding))
         .attr('transform', function(d) { return "translate(" + d.x + ", " + d.y + ")" })
     });
 
   force.start();
 };
 
-Bubbles.prototype._breakText = function(text, lineLength) {
+Bubbles._breakText = function(text, lineLength) {
   var words = text.split(' ');
   var line = '';
   var lines = [];
@@ -159,7 +165,7 @@ Bubbles.prototype._breakText = function(text, lineLength) {
 };
 
 
-Bubbles.prototype.collideFn = function(nodes, alpha, maxRadius, padding, clusterPadding) {
+Bubbles._collideFn = function(nodes, alpha, maxRadius, padding, clusterPadding) {
   var quadtree = d3.geom.quadtree(nodes);
 
   return function(d) {
@@ -190,7 +196,7 @@ Bubbles.prototype.collideFn = function(nodes, alpha, maxRadius, padding, cluster
   }
 };
 
-Bubbles.prototype.clusterFn = function(alpha) {
+Bubbles._clusterFn = function(alpha) {
   return function(d) {
     if (d.cluster === d) {
       return;
