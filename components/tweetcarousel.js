@@ -72,10 +72,19 @@ var TweetCarousel = React.createClass({
     // FIXME If there is no current, there should be no TweetDisplay,
     // but I don't know how to make it's rendering optional. I'm sorry.
     var current = this.props.tweets.length ? this.props.tweets[this.state.currentIndex] : null;
+
+    function conditionallyRenderTweetDisplay() {
+      if (current) {
+        return (<TweetDisplay {...current} />);
+      } else {
+        return null;
+      }
+    }
+
     return (
       <div className="TweetCarousel">
         <h1 className="title">{this.props.title}</h1>
-        <TweetDisplay {...current} />
+        {conditionallyRenderTweetDisplay()}
       </div>
     );
   }
