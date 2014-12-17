@@ -41,21 +41,23 @@ var TweetCarousel = React.createClass({
   },
 
   componentWillUnmount: function() {
+    this.clearTicker();
+  },
+
+  componentWillReceiveProps: function() {
+    this.setState({currentIndex: 0});
+    this.resetTicker();
+  },
+
+  clearTicker: function() {
     if (this.ticker) {
       clearInterval(this.ticker);
     }
   },
 
   resetTicker: function() {
-    if (this.ticker) {
-      clearInterval(this.ticker);
-    }
+    this.clearTicker();
     this.ticker = setInterval(this.rotate, this.props.interval);
-  },
-
-  componentWillReceiveProps: function() {
-    this.setState({currentIndex: 0});
-    this.resetTicker();
   },
 
   rotate: function() {
