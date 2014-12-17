@@ -1,20 +1,16 @@
 class Panel < ActiveRecord::Base
   extend FriendlyId
 
-  validates :name, :presence => true
-  validates :query, :presence => true
+  validates :title, :presence => true
+  validates :search_id, :presence => true
 
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
   def slug_candidates
-    [:name, [:name, :query], :query]
+    [:title, :search_id]
   end
 
   def should_generate_new_friendly_id?
-    name_changed? || @name.blank? and query_changed? || super
-  end
-
-  def title
-    name
+    title_changed? || @title.blank? and search_id_changed? || super
   end
 end

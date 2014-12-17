@@ -248,6 +248,7 @@ DEPENDENCIES
   bootstrap-sass
   coffee-rails (~> 4.0.0)
   dashing-rails (~> 2.4.0)!
+  faraday
   friendly_id
   google-api-client
   i18n

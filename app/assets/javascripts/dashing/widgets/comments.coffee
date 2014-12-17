@@ -5,7 +5,7 @@
 class Dashing.Comments extends Dashing.WidgetWithSpinner
 
   @accessor 'quote', ->
-    "“#{@get('currentComment')?.body}”"
+    "“#{@get('currentComment')?.text}”"
 
   @accessor 'timeago', ->
     cur = @get('currentComment')?.created_at
