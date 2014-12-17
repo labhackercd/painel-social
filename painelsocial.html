@@ -11,13 +11,16 @@
     <script type="text/javascript" src="bower_components/d3/d3.js"></script>
     <script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
     <script type="text/jsx" src="components/bubbles.js"></script>
+    <script type="text/jsx" src="components/tweetcarousel.js"></script>
     <script type="text/jsx">
       d3.json('data/painelsocial.json', function(err, data) {
+
         var PainelSocial = React.createClass({
           render: function() {
             return (
               <div className="PainelSocial">
                 <Bubbles width={500} height={400} data={this.props.causabrasil} />
+                <TweetCarousel tweets={this.props.mentions.comments} />
               </div>
             );
           }
