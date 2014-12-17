@@ -2,9 +2,6 @@
  * TODO Display *time since*
  * TODO Fade-in and fade-out effects while cycling
  * TODO Remove dangerouslySetInnerHTML usage.
- * TODO Find a way to not render TweetDisplay inside TweetCarousel when there
- *      isn't a *current* tweet to display. This is a pretty edge case, but
- *      we should deal with it anyway.
  */
 
 var TweetDisplay = React.createClass({
