@@ -8,7 +8,7 @@ class Dashing.Comments extends Dashing.WidgetWithSpinner
     "“#{@get('currentComment')?.text}”"
 
   @accessor 'timeago', ->
-    cur = @get('currentComment')?.created_at
+    cur = @get('currentComment')?.published_at
     moment.locale('pt-br')
     moment(cur).fromNow() if cur
 
