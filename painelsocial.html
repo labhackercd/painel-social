@@ -12,6 +12,8 @@
     <script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
     <script type="text/jsx" src="components/bubbles.js"></script>
     <script type="text/jsx" src="components/tweetcarousel.js"></script>
+    <script type="text/javascript" src="d3.layout.cloud.js"></script>
+    <script type="text/jsx" src="components/wordcloud.js"></script>
     <script type="text/jsx">
       d3.json('data/painelsocial.json', function(err, data) {
 
@@ -19,6 +21,7 @@
           render: function() {
             return (
               <div className="PainelSocial">
+                <WordCloud width={500} height={400} data={this.props.wordcloud} />
                 <Bubbles width={500} height={400} data={this.props.causabrasil} />
                 <TweetCarousel tweets={this.props.mentions.comments} />
               </div>
