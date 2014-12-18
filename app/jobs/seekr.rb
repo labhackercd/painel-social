@@ -46,18 +46,25 @@ class TwitterProcess
   def self.perform(slug, searchid)
     seekr = self.client
 
+    # Find what's the ID for Twitter in the search
+    medias = seekr.get 'medias.json', {:search_id => 19449}
+    medias = JSON.parse medias.body
+    medias = medias['medias']
+    medias = medias.map.with_index { |x, i| (i + 1) if x['id'].match(/twitter/) }
+    medias = medias.compact
+
     tweets = Array.new
 
     (0..10).to_a.each do |page|
       page = seekr.get 'search_results.json', {
         :search_id => searchid,
         :per_page => 100,
+        :search_setting => medias,
         :page => page
       }
       page = JSON.parse page.body
-      page = page['search_results']
 
-      tweets += page.find_all { |i| i['social_media'].match(/twitter/) }
+      tweets += page['search_results']
 
       break if page.length == 0
     end
