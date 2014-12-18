@@ -116,3 +116,12 @@ class TwitterProcess
     end
   end
 end
+
+class UpdatePanels
+  def self.perform
+    Panel.connection
+    Panel.all.each do |p|
+      Resque.enqueue(TwitterProcess, p.slug, p.search_id)
+    end
+  end
+end
