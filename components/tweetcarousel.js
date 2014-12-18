@@ -1,6 +1,5 @@
 /**
  * TODO Display *time since*
- * TODO Fade-in and fade-out effects while cycling
  * TODO Remove dangerouslySetInnerHTML usage.
  */
 
@@ -30,7 +29,7 @@ var TweetCarousel = React.createClass({
   },
 
   getInitialState: function() {
-    return {currentIndex: 0};
+    return {currentIndex: 0, opacity: 1};
   },
 
   componentDidMount: function() {
@@ -62,7 +61,16 @@ var TweetCarousel = React.createClass({
     if (nextIndex >= this.props.tweets.length) {
       nextIndex = 0;
     }
-    this.setState({currentIndex: nextIndex});
+
+    var fadeDuration = 1;
+
+    TweenLite.to(this, fadeDuration / 2, {
+      state: {opacity: 0},
+      onComplete: (function() {
+        this.setState({currentIndex: nextIndex});
+        TweenLite.to(this, fadeDuration / 2, {state: {opacity: 1}});
+      }).bind(this)
+    });
   },
 
   render: function() {
@@ -78,10 +86,14 @@ var TweetCarousel = React.createClass({
       }
     }
 
+    var style = {opacity: this.state.opacity};
+
     return (
       <div className="TweetCarousel">
         <h1 className="title">{this.props.title}</h1>
-        {conditionallyRenderTweetDisplay()}
+        <div style={style}>
+          {conditionallyRenderTweetDisplay()}
+        </div>
       </div>
     );
   }
