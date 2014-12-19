@@ -4,7 +4,9 @@
  */
 
 var React = require('react');
-var TweenLite = require('../../node_modules/gsap/src/uncompressed/TweenLite');
+
+var gsap = require('gsap');
+var gsap_plugin_react = require('gsap-react-plugin');
 
 var TweetDisplay = React.createClass({
   render: function() {
