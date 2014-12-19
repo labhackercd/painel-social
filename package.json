@@ -24,7 +24,8 @@
     "gsap": "^1.15.0",
     "gsap-react-plugin": "^1.0.2",
     "lodash": "^2.4.1",
-    "react": "^0.12.1"
+    "react": "^0.12.1",
+    "react-time": "^2.1.1"
   },
   "devDependencies": {
     "browserify": "^7.0.3",
