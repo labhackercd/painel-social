@@ -1,3 +1,7 @@
+var _ = require('lodash');
+var d3 = require('d3');
+var React = require('react');
+
 var Bubbles = {};
 
 Bubbles.create = function(el, props, state) {
@@ -242,3 +246,5 @@ Bubbles = React.createClass({
     );
   }
 });
+
+module.exports = Bubbles;

@@ -3,6 +3,9 @@
  * TODO Remove dangerouslySetInnerHTML usage.
  */
 
+var React = require('react');
+var TweenLite = require('../../node_modules/gsap/src/uncompressed/TweenLite');
+
 var TweetDisplay = React.createClass({
   render: function() {
     // TODO FIXME We shouldn't be using *dangerouslySetInnerHTML* here!
@@ -98,3 +101,5 @@ var TweetCarousel = React.createClass({
     );
   }
 });
+
+module.exports = TweetCarousel;

@@ -1,3 +1,4 @@
+var React = require('react');
 
 var NewsList = React.createClass({
   render: function() {
@@ -30,3 +31,5 @@ var NewsList = React.createClass({
     );
   }
 });
+
+module.exports = NewsList;

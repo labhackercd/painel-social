@@ -1,9 +1,13 @@
-// TODO depends on d3.layout.cloud.js. We should require that once using
-//      browserify.
+var d3 = require('d3');
+var React = require('react');
+
+// TODO Shouldn't we try to rename this mess?
+if (!d3.layout) d3.layout = {};
+if (!d3.layout.cloud) d3.layout.cloud = require('../vendor/d3.layout.cloud.js');
 
 var WordCloud = {};
 
-WordCloud.create = function(el, props, state) {
+WordCloud.create = function(el, props) {
   // Create the visualization
   var svg = d3.select(el)
     .append('svg')
@@ -11,11 +15,11 @@ WordCloud.create = function(el, props, state) {
     .attr('width', props.width)
     .attr('height', props.height);
 
-  this.update(el, props, state);
+  this.update(el, props);
 };
 
-WordCloud.update = function(el, props, state) {
-  var words = state.value;
+WordCloud.update = function(el, props) {
+  var words = props.value;
   return this._doTheThing(el, props, words);
 };
 
@@ -72,21 +76,17 @@ var d3WordCloud = WordCloud;
 WordCloud = React.createClass({
   componentDidMount: function() {
     var el = this.getChartDOMNode();
-    d3WordCloud.create(el, this.props, this.getChartState());
+    d3WordCloud.create(el, this.props);
   },
 
   componentDidUpdate: function() {
     var el = this.getChartDOMNode();
-    d3WordCloud.update(el, this.props, this.getChartState());
+    d3WordCloud.update(el, this.props);
   },
 
   componentWillUnmount: function() {
     var el = this.getChartDOMNode();
     d3WordCloud.destroy(el);
-  },
-
-  getChartState: function() {
-    return this.props.data;
   },
 
   getChartDOMNode: function() {
@@ -104,3 +104,4 @@ WordCloud = React.createClass({
   }
 });
 
+module.exports = WordCloud;
