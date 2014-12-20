@@ -12,8 +12,8 @@ module.exports = function(grunt) {
       },
       everything: {
         files: {
-          'build/painelsocial.js': ['src/painelsocial.js'],
-          'build/sandbox.js': ['src/sandbox.js']
+          'build/painelsocial.js': ['src/painelsocial.jsx'],
+          'build/sandbox.js': ['src/sandbox.jsx']
         },
         options: {
           watch: true

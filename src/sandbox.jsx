@@ -4,7 +4,7 @@ var Bubbles = require('./components/bubbles.jsx');
 
 d3.json('data/projetosdelei.json', function(err, data) {
   React.render(
-    React.createElement(Bubbles, {width: 1024, height: 500, data: data}),
+    <Bubbles width={1024} height={500} data={data} />,
     document.getElementById('main')
   );
 });
