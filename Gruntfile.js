@@ -10,13 +10,14 @@ module.exports = function(grunt) {
           debug: true
         }
       },
-      painelsocial: {
-        src: 'src/painelsocial.js',
-        dest: 'build/painelsocial.js'
-      },
-      sandbox: {
-        src: 'src/sandbox.js',
-        dest: 'build/sandbox.js'
+      everything: {
+        files: {
+          'build/painelsocial.js': ['src/painelsocial.js'],
+          'build/sandbox.js': ['src/sandbox.js']
+        },
+        options: {
+          watch: true
+        }
       }
     },
     copy: {
@@ -28,11 +29,9 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      scripts: {
-        files: ['./src/**/*.js', './src/**/*.jsx'],
-        tasks: ['browserify']
-      },
-      'everything else': {
+      sources: {
+        // Watch sources, but ignore files that are already being
+        // watched by browserify-watch (see grunt-browserify's watch option)
         files: ['./src/**', '!./src/**/*.jsx', '!./src/**/*.js'],
         tasks: ['copy']
       },
