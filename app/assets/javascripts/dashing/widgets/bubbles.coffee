@@ -139,9 +139,6 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       
       lines.push(line)
       
-      resolution_size_factor = 
-      console.log 
-      
       node = {
         id: d.label
         label: d.label
