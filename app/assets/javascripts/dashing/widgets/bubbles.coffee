@@ -105,6 +105,7 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       .exponent(0.5)
       .domain([0, max_amount])
       .range([@min_radius, @max_radius])
+      
     
     @create_nodes()
     @create_vis()
@@ -138,11 +139,14 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       
       lines.push(line)
       
+      resolution_size_factor = 
+      console.log 
+      
       node = {
         id: d.label
         label: d.label
         label_lines: lines
-        radius: @radius_scale(parseInt(d.value))
+        radius: @radius_scale(parseInt(d.value)) * (@width/500)
         value: d.value
         cluster: d.categoria
         tooltip: d.tooltip
