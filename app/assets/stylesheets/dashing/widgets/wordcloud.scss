@@ -13,7 +13,13 @@ $tick-color:        rgba(0, 0, 0, 0.4);
 // ----------------------------------------------------------------------------
 .widget-wordcloud {
 
-  background-color: $background-color;
+background: -moz-radial-gradient(center, ellipse cover, rgba(222,114,106,1) 0%, rgba(222,91,71,1) 100%); /* ff3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(222,114,106,1)), color-stop(100%, rgba(222,91,71,1))); /* safari4+,chrome */
+background:-webkit-radial-gradient(center, ellipse cover, rgba(222,114,106,1) 0%, rgba(222,91,71,1) 100%); /* safari5.1+,chrome10+ */
+background: -o-radial-gradient(center, ellipse cover, rgba(222,114,106,1) 0%, rgba(222,91,71,1) 100%); /* opera 11.10+ */
+background: -ms-radial-gradient(center, ellipse cover, rgba(222,114,106,1) 0%, rgba(222,91,71,1) 100%); /* ie10+ */
+background:radial-gradient(ellipse at center, rgba(222,114,106,1) 0%, rgba(222,91,71,1) 100%); /* w3c */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#DE726A', endColorstr='#DE5B47',GradientType=1 ); /* ie6-9 */
   position: relative;
 
 

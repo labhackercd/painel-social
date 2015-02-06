@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 // Sass declarations
 // ----------------------------------------------------------------------------
-$background-color:  #ffffff;
+$background-color:  #CDCBCC;
 
 $title-color:       rgba(0, 0, 0, 1.0);
 $moreinfo-color:    rgba(0, 0, 0, 0.7);
@@ -12,7 +12,14 @@ $tick-color:        rgba(0, 0, 0, 0.4);
 // Widget-graph styles
 // ----------------------------------------------------------------------------
 .widget-bubbles {
-  background-color: $background-color;
+  background: -moz-radial-gradient(center, ellipse cover, rgba(255,252,254,1) 0%, rgba(205,203,204,1) 100%); /* ff3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(255,252,254,1)), color-stop(100%, rgba(205,203,204,1))); /* safari4+,chrome */
+  background:-webkit-radial-gradient(center, ellipse cover, rgba(255,252,254,1) 0%, rgba(205,203,204,1) 100%); /* safari5.1+,chrome10+ */
+  background: -o-radial-gradient(center, ellipse cover, rgba(255,252,254,1) 0%, rgba(205,203,204,1) 100%); /* opera 11.10+ */
+  background: -ms-radial-gradient(center, ellipse cover, rgba(255,252,254,1) 0%, rgba(205,203,204,1) 100%); /* ie10+ */
+  background:radial-gradient(ellipse at center, rgba(255,252,254,1) 0%, rgba(205,203,204,1) 100%); /* w3c */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFCFE', endColorstr='#CDCBCC',GradientType=1 ); /* ie6-9 */
+  
   position: relative;
 
 
@@ -30,7 +37,7 @@ $tick-color:        rgba(0, 0, 0, 0.4);
   .title {
     position: absolute;
     top: 20px;
-    color: $title-color;
+    //color: $title-color;
     width: 100%;
     text-align: center;
     margin-left: -12px;

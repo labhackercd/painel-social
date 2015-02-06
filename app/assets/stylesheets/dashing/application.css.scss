@@ -6,6 +6,8 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+$title-color: rgba(0, 0, 0, .4);
+
 
 /* cor original do dashing */
 body#dashing-dashboard {
@@ -63,6 +65,8 @@ body#dashing-dashboard {
     h1 {
       font-size: 30px;
       margin-top: 4px;
+      color: $title-color;
+      font-family: 'Oswald', sans-serif;
     }
     .btn-editar-painel {
       font-size: 40px;
@@ -91,7 +95,6 @@ body#dashing-dashboard {
     /* /Fim do trecho que o Fellype me mandou fazer */
 
     .title {
-      color: white;
     }
     .label {
       font-size: 100%;

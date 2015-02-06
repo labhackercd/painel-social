@@ -143,7 +143,7 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
         id: d.label
         label: d.label
         label_lines: lines
-        radius: @radius_scale(parseInt(d.value)) * (@width/500)
+        radius: @radius_scale(parseInt(d.value)) ##* (@width/500)
         value: d.value
         cluster: d.categoria
         tooltip: d.tooltip
