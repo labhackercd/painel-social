@@ -198,8 +198,8 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
     node.append("circle")
       .attr("r", 0)
       .attr("fill", (d) => @fill_colors[d.cluster])
-      .attr("stroke-width", 2)
-      .attr("stroke", (d) => d3.rgb(@fill_colors[d.cluster]).darker())
+      .attr("stroke-width", 4)
+      .attr("stroke", (d) => d3.rgb(@fill_colors[d.cluster]).darker(0.5))
       .attr("id", (d) -> "bubble_#{d.id}")
       
     node.append("text")

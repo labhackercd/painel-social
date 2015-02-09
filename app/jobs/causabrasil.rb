@@ -48,7 +48,7 @@ class CausaBrasil
       # end
     end
 
-    fill_colors = ['', '#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3']
+    fill_colors = ['', '#92C05D', '#FF9F2E', '#DC5945', '#B77BD5', '#80B1D2']
     min_radius = 2
     max_radius = 120
 
