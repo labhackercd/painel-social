@@ -120,30 +120,10 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
   create_nodes: () =>
     @data.forEach (d) =>
 
-      # Spaghetti code para "quebrar" o texto em linhas
-
-      MAXIMUM_CHARS_PER_LINE = 20
-      words = d.label.split(" ")
-      line = ""
-      lines = []
-      n = 0
-
-      while n < words.length
-        testLine = line + words[n] + " "
-        if testLine.length > MAXIMUM_CHARS_PER_LINE
-          lines.push(line)
-          line = words[n] + " "
-        else
-          line = testLine
-        n++
-      
-      lines.push(line)
-      
       node = {
         id: d.label
         label: d.label
-        label_lines: lines
-        radius: @radius_scale(parseInt(d.value)) ##* (@width/500)
+        radius: @radius_scale(parseInt(d.value)) * (@width/600)
         value: d.value
         cluster: d.categoria
         tooltip: d.tooltip
@@ -199,36 +179,71 @@ class Dashing.Bubbles extends Dashing.WidgetWithSpinner
       .attr("r", 0)
       .attr("fill", (d) => @fill_colors[d.cluster])
       .attr("stroke-width", 4)
-      .attr("stroke", (d) => d3.rgb(@fill_colors[d.cluster]).darker(0.5))
+      .attr("stroke", (d) => d3.rgb(@fill_colors[d.cluster]).darker(0.4))
       .attr("id", (d) -> "bubble_#{d.id}")
+      .attr("stroke-position", "10px")
       
-    node.append("text")
-      .style("text-anchor", "middle")
-      .attr("transform", (d) -> "translate(0," + -10 * d.radius / 90 + ")")
-      # .style("dy", ".2em")
-      # .style("font-size", (d) -> if d.radius < 90 then 18 * d.radius / 90 + "px" else  "18px")
-      .style("font-size", (d) -> 18 * d.radius / 90 + "px" )
-      .style("font-weight", "600")
-      # .attr("stroke", "#000000")
-      # .attr("stroke-width", "1")
-      .attr("fill", "#000000")
-      .text((d) -> d.label_lines[0])
+    fo = node.append('foreignObject')
+      .attr(
+        x: (d, i) ->
+          -d.radius + 5
+        y: 0
+        width: (d, i) ->
+          d.radius * 2 - 10
+        height: (d, i) ->
+          d.radius * 2 - 10
+      )
+      
+    topicLabel = fo.append('xhtml:div').attr('class', 'topicLabel').attr('pointer-events': 'none')
+    
+    text = topicLabel.append('xhtml:div').text((d, i) ->
+      d.label
+    ).attr(
+      width: 'auto'
+      height: 'auto').attr('text-anchor': 'middle').style(
+      fill: '#30524d'
+      'text-align': 'center').style('font-size', (d, i) ->
+      String(d.radius / 4) + 'px'
+    )
 
-    node.append("text")
-      .style("text-anchor", "middle")
-      .attr("transform", (d) -> "translate(0," + 10 * d.radius / 90 + ")")
-      # .style("font-size", (d) -> if d.radius < 90 then 18 * d.radius / 90 + "px" else  "18px")
-      .style("font-size", (d) -> 18 * d.radius / 90 + "px" )
-      .style("font-weight", "600")
-      # .attr("stroke", "#000000")
-      # .attr("stroke-width", "1")
-      .attr("fill", "#000000")
-      .text((d) -> d.label_lines[1])
+    topicLabel.style display: (d, i) ->
+      rect = d3.select(this).select('div').node().getBoundingClientRect()
+      if d.r * 2 < 100
+        d.label = false
+
+        ###return 'none'###
+
+      else
+        d.label = true
+
+        ###return 'block'###
+
+      return
+    
+    
+    fo.each (d, i) ->
+      rect = d3.select(this).select('div').node().getBoundingClientRect()
+      height = String(-(rect.height / 2))
+      @setAttribute 'y', height
+      return
+      
+#    node.append("text")
+#      .style("text-anchor", "middle")
+#      .attr("transform", (d) -> "translate(0," + -10 * d.radius / 90 + ")")
+#      # .style("dy", ".2em")
+#      # .style("font-size", (d) -> if d.radius < 90 then 18 * d.radius / 90 + "px" else  "18px")
+#      .style("font-size", (d) -> 18 * d.radius / 90 + "px" )
+#      .style("font-weight", "600")
+#      # .attr("stroke", "#000000")
+#      # .attr("stroke-width", "1")
+#      .attr("fill", "#000000")
+#      .text((d) -> d.label)
+
 
 
     # Fancy transition to make bubbles appear, ending with the
     # correct radius
-    @circles.transition().duration(2000).delay((d, i) ->
+    @circles.transition().duration(500).delay((d, i) ->
       i * 5
     ).select("circle").attr("r", (d) -> d.radius)
 

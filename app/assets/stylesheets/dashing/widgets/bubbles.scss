@@ -43,6 +43,11 @@ $tick-color:        rgba(0, 0, 0, 0.4);
     margin-left: -12px;
     margin-right: -12px;
   }
+  
+  .topicLabel {
+    font-family: 'Oswald';
+    text-transform: uppercase;
+  }
 
   .more-info {
     color: $moreinfo-color;
