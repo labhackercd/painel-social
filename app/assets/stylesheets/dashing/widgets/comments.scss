@@ -3,7 +3,6 @@
 // ----------------------------------------------------------------------------
 $background-color:  #eb9c3c;
 
-$title-color:       rgba(255, 255, 255, 1.0);
 $moreinfo-color:    rgba(255, 255, 255, 0.7);
 
 // ----------------------------------------------------------------------------
@@ -22,7 +21,6 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
   .title {
     position: absolute;
     top: 20px;
-    color: $title-color;
     width: 100%;
     text-align: center;
     margin-left: -12px;
@@ -41,8 +39,10 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
     display: none;
   }
 
-  .more-info {
-    color: $moreinfo-color;
+
+  
+  a {
+    color: white;
   }
 
 }

@@ -20,7 +20,7 @@ body#dashing-dashboard {
   .more-info, .title {
     z-index: 2;
     padding: 10px;
-    background-color: rgba(255,255,255,0.6);
+    //background-color: rgba(255,255,255,0.6);
   }
   .title {
     margin-top: -10px !important;
@@ -35,6 +35,17 @@ body#dashing-dashboard {
 
 .tooltip {
   opacity: .9;
+  border: none;
+  border-radius: 0px;
+  -webkit-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.32);
+  -moz-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.32);
+  box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.32);
+  color: #666666;
+}
+
+.more-info {
+  color: $title-color;
+  font-family: "Oswald", "sans-serif";
 }
 
 .painel-social {
@@ -63,7 +74,7 @@ body#dashing-dashboard {
     font-size: 20px;
     color: white;
     h1 {
-      font-size: 30px;
+      font-size: 1.8em;
       margin-top: 4px;
       color: $title-color;
       font-family: 'Oswald', sans-serif;
