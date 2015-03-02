@@ -15,18 +15,17 @@
 @import "bootstrap";
 
 body {
-    /*padding-top: 90px;*/
     margin: 0;
     padding: 0;
-    //background-color: #C2C2C2;
     background-image: image-url("bg.jpg");
     background-size: cover;
-    background-position: center;
+    background-position-x: center;
 }
 
 .logo {
   margin-top: 100px;
   text-align: center;
+  margin-bottom: 50px;
   img {
     width: 200px;
   }
