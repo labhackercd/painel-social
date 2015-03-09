@@ -13,7 +13,13 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
 // ----------------------------------------------------------------------------
 .widget-newslist {
 
-  background-color: $background-color;
+  background: -moz-radial-gradient(center, ellipse cover, rgba(21,207,232,1) 0%, rgba(17,176,197,1) 100%); /* ff3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(21,207,232,1)), color-stop(100%, rgba(17,176,197,1))); /* safari4+,chrome */
+  background:-webkit-radial-gradient(center, ellipse cover, rgba(21,207,232,1) 0%, rgba(17,176,197,1) 100%); /* safari5.1+,chrome10+ */
+  background: -o-radial-gradient(center, ellipse cover, rgba(21,207,232,1) 0%, rgba(17,176,197,1) 100%); /* opera 11.10+ */
+  background: -ms-radial-gradient(center, ellipse cover, rgba(21,207,232,1) 0%, rgba(17,176,197,1) 100%); /* ie10+ */
+  background:radial-gradient(ellipse at center, rgba(21,207,232,1) 0%, rgba(17,176,197,1) 100%); /* w3c */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#15CFE8', endColorstr='#11B0C5',GradientType=1 ); /* ie6-9 */
   vertical-align: top;
 
   .title {

@@ -5,22 +5,38 @@
   data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png">
 </a>
 
-<div class="jumbotron lh-jumbotron">
+<!--<div class="jumbotron lh-jumbotron">
   <div class="container">
     <h1>Painel Social</h1>
     <p class="lead">Acompanhe tópicos em tempo real!</p>
   </div>
-</div>
+</div>-->
 
-<div class="lh-panel-list">
   <div class="container">
-    <% if @panels.count > 0 %>
-    <ul>
-      <% @panels.each do |panel| %>
-        <li><%= link_to panel.title, panel %></a></li>
+    <div class="logo">
+      <%= image_tag("logo.png", :alt => "Painel Social") %>
+    </div>
+    <div class="row panels">
+      <% if @panels.count > 0 %>
+        <% @panels.each do |panel| %>
+        <div class="col-md-3">
+          <%= link_to panel do %>
+            <div class="icon">
+              <%= image_tag("panel_icon.png", :alt => "Painel Social") %>
+            </div>        
+          <h4><% concat panel.title %></h4>
+          <% end %>
+          </a>
+        </div>
+        <% end %>
+        <%= link_to '/dashing/dashboards/sandbox' do %>    
+        <div class="col-md-3">
+          <div class="icon">
+            <%= image_tag("panel_icon.png", :alt => "Painel Social") %>
+          </div>
+          <h4>Proposições mais Visualizadas</h4>
+        </div>
+        <% end %>
       <% end %>
-      <li><%= link_to 'Proposições mais Visualizadas', '/dashing/dashboards/sandbox' %></li>
-    </ul>
-    <% end %>
+    </div>
   </div>
-</div>

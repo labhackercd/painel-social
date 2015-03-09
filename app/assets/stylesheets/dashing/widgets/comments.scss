@@ -3,7 +3,6 @@
 // ----------------------------------------------------------------------------
 $background-color:  #eb9c3c;
 
-$title-color:       rgba(255, 255, 255, 1.0);
 $moreinfo-color:    rgba(255, 255, 255, 0.7);
 
 // ----------------------------------------------------------------------------
@@ -11,12 +10,17 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
 // ----------------------------------------------------------------------------
 .widget-comments {
 
-  background-color: $background-color;
+  background: -moz-radial-gradient(center, ellipse cover, rgba(255,182,92,1) 0%, rgba(255,151,23,1) 100%); /* ff3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(255,182,92,1)), color-stop(100%, rgba(255,151,23,1))); /* safari4+,chrome */
+  background:-webkit-radial-gradient(center, ellipse cover, rgba(255,182,92,1) 0%, rgba(255,151,23,1) 100%); /* safari5.1+,chrome10+ */
+  background: -o-radial-gradient(center, ellipse cover, rgba(255,182,92,1) 0%, rgba(255,151,23,1) 100%); /* opera 11.10+ */
+  background: -ms-radial-gradient(center, ellipse cover, rgba(255,182,92,1) 0%, rgba(255,151,23,1) 100%); /* ie10+ */
+  background:radial-gradient(ellipse at center, rgba(255,182,92,1) 0%, rgba(255,151,23,1) 100%); /* w3c */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFB65C', endColorstr='#FF9717',GradientType=1 ); /* ie6-9 */
 
   .title {
     position: absolute;
     top: 20px;
-    color: $title-color;
     width: 100%;
     text-align: center;
     margin-left: -12px;
@@ -35,8 +39,10 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
     display: none;
   }
 
-  .more-info {
-    color: $moreinfo-color;
+
+  
+  a {
+    color: white;
   }
 
 }
