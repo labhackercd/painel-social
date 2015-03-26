@@ -10,7 +10,12 @@ class CausaBrasil
     
     # First get dates
     base_url = "http://brasilcausal.labhackercd.net"
-    resp = Net::HTTP.get_response(URI.parse(base_url))
+
+    uri = URI.parse(base_url)
+    net = Net::HTTP.new(uri.host, uri.port)
+    net.read_timeout = 1000 # XXX Stupidly high timeout because our API sucks.
+    resp = net.get_response("/")
+
     data = resp.body
     
     result = JSON.parse(data)
