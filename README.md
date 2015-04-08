@@ -19,7 +19,7 @@ TODO
 1. Clone o projeto:
     
     ```
-    $ git clone https://github.com/labhackercd/painel-social.git
+    $ git clone --recursive https://github.com/labhackercd/painel-social.git
     ```
 
 2. Execute o bundle:
