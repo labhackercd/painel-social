@@ -80,13 +80,18 @@ class TwitterProcess
 
     Dashing.send_event("#{slug}_twitter_mentions", {:comments => mentions}, :cache => true)
 
+    # Blacklist of Hashtags
+
+    blacklist = JSON.parse(File.read(Rails.root.join("app/jobs/hashtags.json")))['hashtags']
+
     freqmap = Hash.new(0)
 
     tweets.each do |t|
       words = UnicodeUtils.downcase(t['text'])
       words = words.split(/[\s,.;'\?\!\+]/)
       words.each do |w|
-        freqmap[w] += 1 if w.start_with?('#')
+        # Filtering Hashtags
+        freqmap[w] += 1 if w.start_with?('#') && !blacklist.include?(w)
       end
     end
 
@@ -102,7 +107,7 @@ class TwitterProcess
         :link => "https://twitter.com/search?q=" + URI::encode(word) + "&lang=pt"
       }
     end
-
+    
     info = "Baseado em #{freqmap.values.inject(:+)} hashtags presentes em #{mentions.length} tweets"
     Dashing.send_event("#{slug}_twitter_wordcloud", {:value => wordcloud, :moreinfo => info}, :cache => true)
   end
