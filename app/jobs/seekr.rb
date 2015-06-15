@@ -69,7 +69,17 @@ class TwitterProcess
       break if page.length == 0
     end
 
-    mentions = tweets.map do |t|
+    # Filtering Relevants Tweets
+
+    tweets_relevants = tweets.sort_by{|k| k['reach']}.reverse
+
+
+    # Collecting Tweet Sample (50)
+
+    tweets_relevants.slice(0..50)
+
+
+    mentions = tweets_relevants.map do |t|
       {
         :text => t['text'].gsub(URI.regexp, '<a href="\0">\0</a>'),
         :author => t['user'],
@@ -107,7 +117,7 @@ class TwitterProcess
         :link => "https://twitter.com/search?q=" + URI::encode(word) + "&lang=pt"
       }
     end
-    
+
     info = "Baseado em #{freqmap.values.inject(:+)} hashtags presentes em #{mentions.length} tweets"
     Dashing.send_event("#{slug}_twitter_wordcloud", {:value => wordcloud, :moreinfo => info}, :cache => true)
   end
