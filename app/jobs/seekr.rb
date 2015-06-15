@@ -69,7 +69,17 @@ class TwitterProcess
       break if page.length == 0
     end
 
-    mentions = tweets.map do |t|
+    # Filtering Relevants Tweets
+
+    tweets_relevants = tweets.sort_by{|k| k['reach']}.reverse
+
+
+    # Collecting Tweet Sample (50)
+
+    tweets_relevants.slice(0..50)
+
+
+    mentions = tweets_relevants.map do |t|
       {
         :text => t['text'].gsub(URI.regexp, '<a href="\0">\0</a>'),
         :author => t['user'],
@@ -80,13 +90,22 @@ class TwitterProcess
 
     Dashing.send_event("#{slug}_twitter_mentions", {:comments => mentions}, :cache => true)
 
+    # Blacklist of Hashtags
+    begin
+      blacklist = JSON.parse(File.read(Rails.root.join("app/jobs/hashtags.json")))['hashtags']
+    rescue Errno::ENOENT
+      blacklist = []
+    end
+
+
     freqmap = Hash.new(0)
 
     tweets.each do |t|
       words = UnicodeUtils.downcase(t['text'])
       words = words.split(/[\s,.;'\?\!\+]/)
       words.each do |w|
-        freqmap[w] += 1 if w.start_with?('#')
+        # Filtering Hashtags
+        freqmap[w] += 1 if w.start_with?('#') && !blacklist.include?(w)
       end
     end
 
