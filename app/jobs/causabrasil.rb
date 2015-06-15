@@ -9,12 +9,9 @@ class CausaBrasil
     tema_counts = Hash.new({ value: 0 })
     
     # First get dates
-    base_url = "http://brasilcausal.labhackercd.net"
-
-    uri = URI.parse(base_url)
-    net = Net::HTTP.new(uri.host, uri.port)
+    net = Net::HTTP.new('127.0.0.1', 8013)
     net.read_timeout = 1000 # XXX Stupidly high timeout because our API sucks.
-    resp = net.get_response("/")
+    resp = net.request_get("/")
 
     data = resp.body
     
