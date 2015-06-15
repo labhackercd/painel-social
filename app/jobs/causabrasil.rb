@@ -14,7 +14,7 @@ class CausaBrasil
     uri = URI.parse(base_url)
     net = Net::HTTP.new(uri.host, uri.port)
     net.read_timeout = 1000 # XXX Stupidly high timeout because our API sucks.
-    resp = net.request_get("/")
+    resp = net.get_response("/")
 
     data = resp.body
     
