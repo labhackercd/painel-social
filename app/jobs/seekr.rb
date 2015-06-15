@@ -91,8 +91,12 @@ class TwitterProcess
     Dashing.send_event("#{slug}_twitter_mentions", {:comments => mentions}, :cache => true)
 
     # Blacklist of Hashtags
+    begin
+      blacklist = JSON.parse(File.read(Rails.root.join("app/jobs/hashtags.json")))['hashtags']
+    rescue Errno::ENOENT
+      blacklist = []
+    end
 
-    blacklist = JSON.parse(File.read(Rails.root.join("app/jobs/hashtags.json")))['hashtags']
 
     freqmap = Hash.new(0)
 
