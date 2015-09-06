@@ -21,8 +21,7 @@ gem 'rails-assets-moment'
 gem 'pry', :group => [:development]
 
 # Databases
-gem 'pg', :group => [:production]
-gem 'sqlite3'
+gem 'pg'
 
 # Rails 4.1
 gem 'rails', '4.1.4'
