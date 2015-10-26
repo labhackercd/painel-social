@@ -47,7 +47,7 @@ class TwitterProcess
     seekr = self.client
 
     # Find what's the ID for Twitter in the search
-    medias = seekr.get 'medias.json', {:search_id => 19449}
+    medias = seekr.get 'medias.json', {:search_id => searchid}
     medias = JSON.parse medias.body
     medias = medias['medias']
     medias = medias.map.with_index { |x, i| (i + 1) if x['id'].match(/twitter/) }
