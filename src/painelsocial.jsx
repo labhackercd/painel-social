@@ -1,26 +1,23 @@
-var d3 = require('d3');
-var React = require('react');
-var Bubbles = require('./components/bubbles.jsx');
-var TweetCarousel = require('./components/tweetcarousel.jsx');
-var WordCloud = require('./components/wordcloud.jsx');
-var NewsList = require('./components/newslist.jsx');
+import d3 from 'd3';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Bubbles from './components/bubbles.jsx';
+import NewsList  from './components/newslist.jsx';
+import TweetCarousel from './components/tweetcarousel.jsx';
+import WordCloud from './components/wordcloud.jsx';
 
-var PainelSocial = React.createClass({
-  render: function() {
-    return (
-      <div className="PainelSocial">
-        <Bubbles width={500} height={400} data={this.props.causabrasil} />
-        <TweetCarousel tweets={this.props.mentions.comments} />
-        <WordCloud width={500} height={400} {...this.props.wordcloud} />
-        <NewsList title={'Mais Lidas da Agência Câmara'} {...this.props.noticiasagenciacamara} />
-      </div>
-    );
-  }
-});
+const PainelSocial = ({causabrasil, mentions, wordcloud, noticiasagenciacamara}) => (
+    <div className="PainelSocial">
+        <Bubbles width={500} height={400} data={causabrasil} />
+        <TweetCarousel tweets={mentions.comments} />
+        <WordCloud width={500} height={400} {...wordcloud} />
+        <NewsList title={'Mais Lidas da Agência Câmara'} {...noticiasagenciacamara} />
+    </div>
+);
 
 d3.json('data/painelsocial.json', function(err, data) {
-  React.render(
-    <PainelSocial {...data} />,
-    document.getElementById('main')
+  ReactDOM.render(
+      <PainelSocial {...data} />,
+      document.getElementById('main')
   );
 });

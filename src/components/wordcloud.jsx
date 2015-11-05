@@ -1,13 +1,14 @@
-var d3 = require('d3');
-var React = require('react');
+import d3 from 'd3';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 // TODO Shouldn't we try to rename this mess?
 if (!d3.layout) d3.layout = {};
-if (!d3.layout.cloud) d3.layout.cloud = require('../vendor/d3.layout.cloud.js');
+if (!d3.layout.cloud) d3.layout.cloud = require('../vendor/d3.layout.cloud');
 
-var WordCloud = {};
+var WordCloudHelper = {};
 
-WordCloud.create = function(el, props) {
+WordCloudHelper.create = function(el, props) {
   // Create the visualization
   var svg = d3.select(el)
     .append('svg')
@@ -18,16 +19,16 @@ WordCloud.create = function(el, props) {
   this.update(el, props);
 };
 
-WordCloud.update = function(el, props) {
+WordCloudHelper.update = function(el, props) {
   var words = props.value;
   return this._doTheThing(el, props, words);
 };
 
-WordCloud.destroy = function(el) {
+WordCloudHelper.destroy = function(el) {
   // Any cleanup goes here
 };
 
-WordCloud._doTheThing = function(el, props, words) {
+WordCloudHelper._doTheThing = function(el, props, words) {
   var fill = d3.scale.linear()
     .domain([0, 1, 2])
     .range(["#222", "#333", "#444"]);
@@ -49,7 +50,7 @@ WordCloud._doTheThing = function(el, props, words) {
     .start();
 };
 
-WordCloud._drawFn = function(el, width, height, fill) {
+WordCloudHelper._drawFn = function(el, width, height, fill) {
   return function(words) {
     d3.select(el).select('svg')
       .append('g')
@@ -71,37 +72,33 @@ WordCloud._drawFn = function(el, width, height, fill) {
   };
 };
 
-var d3WordCloud = WordCloud;
-
-WordCloud = React.createClass({
-  componentDidMount: function() {
+export default class WordCloud extends React.Component {
+  componentDidMount() {
     var el = this.getChartDOMNode();
-    d3WordCloud.create(el, this.props);
-  },
+    WordCloudHelper.create(el, this.props);
+  }
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     var el = this.getChartDOMNode();
-    d3WordCloud.update(el, this.props);
-  },
+    WordCloudHelper.update(el, this.props);
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     var el = this.getChartDOMNode();
-    d3WordCloud.destroy(el);
-  },
+    WordCloudHelper.destroy(el);
+  }
 
-  getChartDOMNode: function() {
-    return this.getDOMNode().getElementsByClassName('WordCloudChart')[0];
-  },
+  getChartDOMNode() {
+    return ReactDOM.findDOMNode(this).getElementsByClassName('WordCloudHelperChart')[0];
+  }
 
-  render: function() {
+  render() {
     return (
-      <div className="WordCloud">
+      <div className="WordCloudHelper">
         <h1 className="title">{this.props.title}</h1>
-        <div className="WordCloudChart"></div>
+        <div className="WordCloudHelperChart"></div>
         <p className="more-info">{this.props.moreinfo}</p>
       </div>
     );
   }
-});
-
-module.exports = WordCloud;
+};

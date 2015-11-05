@@ -1,10 +1,11 @@
-var _ = require('lodash');
-var d3 = require('d3');
-var React = require('react');
+import _ from 'lodash';
+import d3 from 'd3';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-var Bubbles = {};
+var BubblesHelper = {};
 
-Bubbles.create = function(el, props, state) {
+BubblesHelper.create = function(el, props, state) {
   // Create the visualization
   var svg = d3.select(el)
     .append('svg')
@@ -15,16 +16,16 @@ Bubbles.create = function(el, props, state) {
   this.update(el, props, state);
 };
 
-Bubbles.update = function(el, props, state) {
+BubblesHelper.update = function(el, props, state) {
   var nodes = this._createNodes(props, state);
-  return this._drawAndAnimateBubbles(el, props, state, nodes);
+  return this._drawAndAnimateBubblesHelper(el, props, state, nodes);
 };
 
-Bubbles.destroy = function(el) {
+BubblesHelper.destroy = function(el) {
   // Any cleanup goes here
 };
 
-Bubbles._createNodes = function(props, state) {
+BubblesHelper._createNodes = function(props, state) {
   var fillColors = state.fillColors;
   var minRadius = state.minRadius;
   var maxRadius = state.maxRadius;
@@ -73,7 +74,7 @@ Bubbles._createNodes = function(props, state) {
   return _.sortBy(nodes, function(d) { return d.value * (-1) });
 };
 
-Bubbles._drawAndAnimateBubbles = function(el, props, state, nodes) {
+BubblesHelper._drawAndAnimateBubblesHelper = function(el, props, state, nodes) {
   var width = props.width;
   var height = props.height;
   var padding = 1.5;
@@ -141,7 +142,7 @@ Bubbles._drawAndAnimateBubbles = function(el, props, state, nodes) {
   force.start();
 };
 
-Bubbles._breakText = function(text, lineLength) {
+BubblesHelper._breakText = function(text, lineLength) {
   var words = text.split(' ');
   var line = '';
   var lines = [];
@@ -151,7 +152,7 @@ Bubbles._breakText = function(text, lineLength) {
   }
 
   for (var i = 0; i < words.length; i++) {
-    testLine = line + words[i] + ' ';
+    let testLine = line + words[i] + ' ';
     if (testLine.length > lineLength) {
       lines.push(line);
       line = words[i] + ' ';
@@ -166,7 +167,7 @@ Bubbles._breakText = function(text, lineLength) {
 };
 
 
-Bubbles._collideFn = function(nodes, alpha, maxRadius, padding, clusterPadding) {
+BubblesHelper._collideFn = function(nodes, alpha, maxRadius, padding, clusterPadding) {
   var quadtree = d3.geom.quadtree(nodes);
 
   return function(d) {
@@ -197,7 +198,7 @@ Bubbles._collideFn = function(nodes, alpha, maxRadius, padding, clusterPadding) 
   }
 };
 
-Bubbles._clusterFn = function(alpha) {
+BubblesHelper._clusterFn = function(alpha) {
   return function(d) {
     if (d.cluster === d) {
       return;
@@ -218,33 +219,30 @@ Bubbles._clusterFn = function(alpha) {
   }
 };
 
-var d3Bubbles = Bubbles;
+export default class Bubbles extends React.Component {
+  componentDidMount() {
+    BubblesHelper.create(this.getChartDOMNode(), this.props, this.getChartState());
+  }
 
-Bubbles = React.createClass({
-  componentDidMount: function() {
-    var el = this.getDOMNode();
-    d3Bubbles.create(el, this.props, this.getChartState());
-  },
+  componentDidUpdate() {
+    BubblesHelper.update(this.getChartDOMNode(), this.props, this.getChartState());
+  }
 
-  componentDidUpdate: function() {
-    var el = this.getDOMNode();
-    d3Bubbles.update(el, this.props, this.getChartState());
-  },
+  getChartDOMNode() {
+    return ReactDOM.findDOMNode(this);
+  }
 
-  getChartState: function() {
+  getChartState() {
     return this.props.data;
-  },
+  }
 
-  componentWillUnmount: function() {
-    var el = this.getDOMNode();
-    d3Bubbles.destroy(el);
-  },
+  componentWillUnmount() {
+    BubblesHelper.destroy(this.findDOMNode());
+  }
 
-  render: function() {
+  render() {
     return (
       <div className="Bubbles"></div>
     );
   }
-});
-
-module.exports = Bubbles;
+}

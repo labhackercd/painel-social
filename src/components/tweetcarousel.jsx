@@ -1,95 +1,80 @@
-var React = require('react');
+import React from 'react';
+import gsap from 'gsap';
+import gsap_react_plugin from 'gsap-react-plugin';
+import Time from 'react-time';
 
-var gsap = require('gsap');
-var gsap_plugin_react = require('gsap-react-plugin');
-
-var Time = require('react-time');
-
-function isNumber(obj) {
-  return toString.call(value) === '[object Number]';
-}
-
-var TimeSince = React.createClass({
-  displayName: 'TimeSince',
-
-  getDefaultProps: function() {
-    return {
-      updateInterval: 5000
-    };
-  },
-
-  componentDidMount: function() {
+class TimeSince extends React.Component {
+  componentDidMount() {
     this.resetTicker();
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.clearTicker();
-  },
+  }
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (typeof nextProps.updateInterval !== 'undefined') {
       this.resetTicker();
     }
-  },
+  }
 
-  clearTicker: function() {
+  clearTicker() {
     if (this.ticker) {
       return clearInterval(this.ticker);
     }
-  },
+  }
 
-  resetTicker: function() {
+  resetTicker() {
     this.clearTicker();
     return this.ticker = setInterval(this.invalidate, this.props.updateInterval);
-  },
-
-  invalidate: function() {
-    this.forceUpdate();
-  },
-
-  render: function() {
-    return <Time {...this.props} relative={true} />
   }
-});
 
-var TweetDisplay = React.createClass({
-  render: function() {
+  invalidate() {
+    // FIXME This is probably not working!
+    if (this.forceUpdate) {
+      this.forceUpdate();
+    }
+  }
+
+  render() {
+    return <Time {...this.props} relative={true} />;
+  }
+}
+
+TimeSince.displayName = 'TimeSince';
+
+TimeSince.defaultProps = {
+  updateInterval: 5000
+};
+
+const TweetDisplay = (props) => (
     // TODO FIXME *dangerouslySetInnerHTML* is probably dangerous, isn't it?
+    <div className="TweetDisplay">
+      <h3>
+        <img src={props.authorImage} />
+        <span className="author">{props.author}</span>
+      </h3>
 
-    var quotedText = '"' + this.props.text + '"';
+      <p className="comment" dangerouslySetInnerHTML={{__html: '"' + props.text + '"'}} />
+      <TimeSince value={props.publishedAt} updateInterval={1000} />
+    </div>
+);
 
-    return (
-      <div className="TweetDisplay">
-        <h3>
-          <img src={this.props.authorImage} />
-          <span className="author">{this.props.author}</span>
-        </h3>
-
-        <p className="comment" dangerouslySetInnerHTML={{__html: quotedText}} />
-        <TimeSince value={this.props.publishedAt} updateInterval={1000} />
-      </div>
-    );
+class TweetCarousel extends React.Component {
+  constructor() {
+    super();
+    this.state = {currentIndex: 0, opacity: 1};
   }
-});
 
-var TweetCarousel = React.createClass({
-  getDefaultProps: function() {
-    return {title: 'Twitter', interval: 8000, tweets: []};
-  },
-
-  getInitialState: function() {
-    return {currentIndex: 0, opacity: 1};
-  },
-
-  componentDidMount: function() {
+  componentDidMount() {
     this.resetTicker();
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.clearTicker();
-  },
+  }
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     var receivedTweets = typeof nextProps.tweets !== 'undefined';
     var receivedInterval = typeof nextProps.interval !== 'undefined';
 
@@ -100,21 +85,22 @@ var TweetCarousel = React.createClass({
     if (receivedTweets || receivedInterval) {
       this.resetTicker();
     }
-  },
+  }
 
-  clearTicker: function() {
+  clearTicker() {
     if (this.ticker) {
       clearInterval(this.ticker);
     }
-  },
+  }
 
-  resetTicker: function() {
+  resetTicker() {
     this.clearTicker();
     this.ticker = setInterval(this.rotate, this.props.interval);
-  },
+  }
 
-  rotate: function() {
-    var nextIndex = this.state.currentIndex + 1;
+  rotate() {
+    let nextIndex = this.state.currentIndex + 1;
+
     if (nextIndex >= this.props.tweets.length) {
       nextIndex = 0;
     }
@@ -129,9 +115,9 @@ var TweetCarousel = React.createClass({
         TweenLite.to(this, fadeDuration / 2, {state: {opacity: 1}});
       }).bind(this)
     });
-  },
+  }
 
-  render: function() {
+  render() {
     var tweets = this.props.tweets;
     var current = tweets.length === 0 ? null : tweets[this.state.currentIndex];
 
@@ -148,6 +134,12 @@ var TweetCarousel = React.createClass({
       </div>
     );
   }
-});
+}
 
-module.exports = TweetCarousel;
+TweetCarousel.defaultProps = {
+  title: 'Twitter',
+  interval: 8000,
+  tweets: []
+};
+
+export default TweetCarousel;
