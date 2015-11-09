@@ -1,6 +1,4 @@
 import React from 'react';
-import gsap from 'gsap';
-import gsap_react_plugin from 'gsap-react-plugin';
 import Time from 'react-time';
 
 class TimeSince extends React.Component {
@@ -61,9 +59,15 @@ const TweetDisplay = (props) => (
 );
 
 class TweetCarousel extends React.Component {
-  constructor() {
-    super();
-    this.state = {currentIndex: 0, opacity: 1};
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentIndex: 0
+    };
+  }
+
+  componentWillMount() {
+    this.setState({currentIndex: 0});
   }
 
   componentDidMount() {
@@ -75,16 +79,13 @@ class TweetCarousel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var receivedTweets = typeof nextProps.tweets !== 'undefined';
-    var receivedInterval = typeof nextProps.interval !== 'undefined';
+    this.setState({currentIndex: 0});
+    this.resetTicker();
+  }
 
-    if (receivedTweets) {
-      this.setState({currentIndex: 0});
-    }
-
-    if (receivedTweets || receivedInterval) {
-      this.resetTicker();
-    }
+  resetTicker() {
+    this.clearTicker();
+    this.ticker = setInterval(() => this.rotate(), this.props.interval);
   }
 
   clearTicker() {
@@ -93,44 +94,31 @@ class TweetCarousel extends React.Component {
     }
   }
 
-  resetTicker() {
-    this.clearTicker();
-    this.ticker = setInterval(this.rotate, this.props.interval);
-  }
-
   rotate() {
+    // TODO animation, like fade-in:fade-out
     let nextIndex = this.state.currentIndex + 1;
 
     if (nextIndex >= this.props.tweets.length) {
       nextIndex = 0;
     }
 
-    // Duration of the whole "fade-out, fade-in" animation, in seconds.
-    var fadeDuration = 1;
-
-    TweenLite.to(this, fadeDuration / 2, {
-      state: {opacity: 0},
-      onComplete: (function() {
-        this.setState({currentIndex: nextIndex});
-        TweenLite.to(this, fadeDuration / 2, {state: {opacity: 1}});
-      }).bind(this)
-    });
+    this.setState({currentIndex: nextIndex});
   }
 
   render() {
-    var tweets = this.props.tweets;
-    var current = tweets.length === 0 ? null : tweets[this.state.currentIndex];
+    let {tweets, title} = this.props;
+    let {currentIndex} = this.state;
+
+    let current = tweets.length === 0 ? null : tweets[currentIndex];
 
     if (current) {
       current = <TweetDisplay {...current} />;
     }
 
-    var style = {opacity: this.state.opacity};
-
     return (
       <div className="TweetCarousel">
-        <h1 className="title">{this.props.title}</h1>
-        <div style={style}>{current}</div>
+        <h1 className="title">{title}</h1>
+        <div>{current}</div>
       </div>
     );
   }
